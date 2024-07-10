@@ -7,6 +7,7 @@ import numpy as np
 
 import os
 from datetime import datetime, timedelta
+from typing import Optional
 
 FOLDER_ID = os.environ["FOLDER_ID"]
 OAUTH_TOKEN = os.environ["OAUTH_TOKEN"]
@@ -16,10 +17,12 @@ __IAM_TOKEN = ""
 # constants
 IAM_URL = "https://iam.api.cloud.yandex.net/iam/v1/tokens"
 EMBEDDING_URL = "https://llm.api.cloud.yandex.net:443/foundationModels/v1/textEmbedding"
+COMPLETION_URL = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion"
 
 # derived constants
 DOC_URI = f"emb://{FOLDER_ID}/text-search-doc/latest"
 QUERY_URI = f"emb://{FOLDER_ID}/text-search-query/latest"
+GPTLITE_URI = f"gpt://{FOLDER_ID}/yandexgpt-lite"
 
 
 def iam_token() -> str:
@@ -51,3 +54,33 @@ def embedding(text: str, model: str = "doc") -> np.ndarray:
     r.raise_for_status()
 
     return np.array(r.json()["embedding"])
+
+
+def complete(
+    query: str,
+    instruction: Optional[str] = None,
+    temperature: float = 0.1,
+    max_tokens: int = 1000,
+    model: str = "yandexgpt-lite",
+) -> str:
+    uri = GPTLITE_URI
+
+    messages = [{"role": "user", "text": query}]
+    if instruction is not None:
+        messages.insert(0, {"role": "system", "text": instruction})
+
+    payload = {
+        "modelUri": uri,
+        "completionOptions": {
+            "stream": False,
+            "temperature": temperature,
+            "maxTokens": max_tokens,
+        },
+        "messages": messages,
+    }
+
+    r = requests.post(COMPLETION_URL, json=payload, headers=headers())
+
+    text = r.json()["result"]["alternatives"][0]["message"]["text"]
+
+    return text
