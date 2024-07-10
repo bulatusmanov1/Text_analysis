@@ -22,8 +22,7 @@ EMBEDDING_URL = "https://llm.api.cloud.yandex.net:443/foundationModels/v1/textEm
 DOC_URI = f"emb://{FOLDER_ID}/text-search-doc/latest"
 QUERY_URI = f"emb://{FOLDER_ID}/text-search-query/latest"
 
-
-def iam_token():
+def iam_token() -> str:
     if datetime.now() - __IAM_TIME < timedelta(hours=1):
         return __IAM_TOKEN
 
@@ -31,16 +30,22 @@ def iam_token():
     r = requests.post(IAM_URL, json=payload)
     r.raise_for_status()
 
-    return r["iam_token"]
+    return r.json()["iamToken"]
 
-def embedding(text: str, model: str = "doc"):
+def headers():
+    return  {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {iam_token()}",
+        "x-folder-id": f"{FOLDER_ID}"
+    }
 
+def embedding(text: str, model: str = "doc") -> np.ndarray:
     payload = {
         "modelUri": DOC_URI if model == "doc" else QUERY_URI,
         "text": text,
     }
 
-    r = requests.post(EMBEDDING_URL, json=payload)
+    r = requests.post(EMBEDDING_URL, json=payload, headers=headers())
     r.raise_for_status()
 
-    return np.array(r["embedding"])
+    return np.array(r.json()["embedding"])
