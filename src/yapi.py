@@ -58,6 +58,16 @@ def embedding(text: str, model: str = "doc") -> np.ndarray:
     return np.array(r.json()["embedding"])
 
 
+def _model_uri(model: str) -> str:
+    match model:
+        case "pro":
+            return GPTPRO_URI
+        case "lite":
+            return GPTLITE_URI
+        case "summary":
+            return SUMMARY_URI
+
+
 def complete(
     query: str,
     instruction: Optional[str] = None,
@@ -65,21 +75,12 @@ def complete(
     max_tokens: int = 1000,
     model: str = "lite",
 ) -> str:
-    uri = ""
-    match model:
-        case "pro":
-            uri = GPTPRO_URI
-        case "lite":
-            uri = GPTLITE_URI
-        case "summary":
-            uri = SUMMARY_URI
-
     messages = [{"role": "user", "text": query}]
     if instruction is not None:
         messages.insert(0, {"role": "system", "text": instruction})
 
     payload = {
-        "modelUri": uri,
+        "modelUri": _model_uri(model),
         "completionOptions": {
             "stream": False,
             "temperature": temperature,
