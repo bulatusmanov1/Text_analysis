@@ -22,7 +22,9 @@ COMPLETION_URL = "https://llm.api.cloud.yandex.net/foundationModels/v1/completio
 # derived constants
 DOC_URI = f"emb://{FOLDER_ID}/text-search-doc/latest"
 QUERY_URI = f"emb://{FOLDER_ID}/text-search-query/latest"
-GPTLITE_URI = f"gpt://{FOLDER_ID}/yandexgpt-lite"
+GPTPRO_URI = f"gpt://{FOLDER_ID}/yandexgpt/latest"
+GPTLITE_URI = f"gpt://{FOLDER_ID}/yandexgpt-lite/latest"
+SUMMARY_URI = f"gpt://{FOLDER_ID}/summarization/latest"
 
 
 def iam_token() -> str:
@@ -61,9 +63,16 @@ def complete(
     instruction: Optional[str] = None,
     temperature: float = 0.1,
     max_tokens: int = 1000,
-    model: str = "yandexgpt-lite",
+    model: str = "lite",
 ) -> str:
-    uri = GPTLITE_URI
+    uri = ""
+    match model:
+        case "pro":
+            uri = GPTPRO_URI
+        case "lite":
+            uri = GPTLITE_URI
+        case "summary":
+            uri = SUMMARY_URI
 
     messages = [{"role": "user", "text": query}]
     if instruction is not None:
