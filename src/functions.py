@@ -14,7 +14,7 @@ def split_into_sentences(text, mode):
     elif mode == "nltk":
         sentences = sent_tokenize(text)
     else:
-        sentences = "Выберете доступный режим: points, lines, spaCy, nltk"
+        raise Exception('"Выберете доступный режим: points, lines, spaCy, nltk"')
     return sentences
 
 
