@@ -6,7 +6,6 @@ import requests
 import numpy as np
 
 import os
-import json
 from datetime import datetime, timedelta
 
 FOLDER_ID = os.environ["FOLDER_ID"]
