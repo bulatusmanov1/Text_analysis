@@ -8,7 +8,7 @@ def split_into_sentences(text, mode):
     elif mode == "lines":
         sentences = text.split("\n")
     elif mode == "spaCy":
-        nlp = spacy.load("en_core_web_sm")
+        nlp = spacy.load("ru_core_news_sm")
         doc = nlp(text)
         sentences = [sent.text for sent in doc.sents]
     elif mode == "nltk":
