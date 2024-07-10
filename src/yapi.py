@@ -7,7 +7,7 @@ import numpy as np
 
 import os
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, List
 
 FOLDER_ID = os.environ["FOLDER_ID"]
 OAUTH_TOKEN = os.environ["OAUTH_TOKEN"]
@@ -18,6 +18,7 @@ __IAM_TOKEN = ""
 IAM_URL = "https://iam.api.cloud.yandex.net/iam/v1/tokens"
 EMBEDDING_URL = "https://llm.api.cloud.yandex.net:443/foundationModels/v1/textEmbedding"
 COMPLETION_URL = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion"
+TOKENIZE_URL = "https://llm.api.cloud.yandex.net/foundationModels/v1/tokenize"
 
 # derived constants
 DOC_URI = f"emb://{FOLDER_ID}/text-search-doc/latest"
@@ -94,3 +95,14 @@ def complete(
     text = r.json()["result"]["alternatives"][0]["message"]["text"]
 
     return text
+
+
+def tokenize(text: str, model: str = "lite") -> List[str]:
+    payload = {
+        "modelUri": _model_uri(model),
+        "text": text,
+    }
+
+    r = requests.post(TOKENIZE_URL, json=payload, headers=headers())
+
+    return r.json()["tokens"]
