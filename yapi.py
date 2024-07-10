@@ -33,7 +33,7 @@ def iam_token():
 
     return r["iam_token"]
 
-def embedding(text, model = "doc"):
+def embedding(text: str, model: str = "doc"):
 
     payload = {
         "modelUri": DOC_URI if model == "doc" else QUERY_URI,
