@@ -1,5 +1,6 @@
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
+import random
 
 client = QdrantClient(path="data.db") 
 
@@ -16,11 +17,9 @@ def creating_collection(size = 128, collection_name: str = "data"):
 def add_to_collection(vectors, payloads, collection_name = "data"):
     try:
         points = []
-        next_id = len(get_all_points(1000000)) + 1
 
         for vector, payload in zip(vectors, payloads):
-            points.append(models.PointStruct(id=next_id, vector=vector, payload=payload))
-            next_id += 1
+            points.append(models.PointStruct(id=random.randint(1,10**10), vector=vector, payload=payload))
 
         client.upsert(
             collection_name=collection_name,
@@ -40,26 +39,3 @@ def get_from_collection(query_vector, limit = 3, collection_name = "data"):
         return search_result
     except:
         raise Exception(f"Запрос к коллекции '{collection_name}' провалился.")
-    
-def get_all_points(limit, collection_name = "data"):
-    all_points = []
-    offset = 0
-
-    while True:
-        response = client.scroll(
-            collection_name=collection_name,
-            limit=limit,
-            with_payload=True,
-            with_vectors=True,
-            offset=offset
-        )
-
-        points = response[0]
-        all_points.extend(points)
-        
-        if len(points) < limit:
-            break
-
-        offset += limit
-
-    return all_points
