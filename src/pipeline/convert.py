@@ -2,7 +2,7 @@
 Module for converting PDF files into a Markdown AST-like structure.
 """
 
-import pdfminer
+from pdfminer.high_level import extract_text
 
 from typing import List, Dict
 
@@ -10,7 +10,7 @@ from ..util import yapi
 
 
 def _extract_pdf(path: str) -> str:
-    return open(path, "r").read()
+    return extract_text(path)
 
 
 def _llm_convert_to_md(text: str) -> str:
@@ -60,3 +60,15 @@ def _to_ast(markdown: str) -> List[Dict]:
         par += line
 
     return out
+
+
+def convert(path: str) -> List[Dict]:
+    """
+    Takes a path to a PDF file and returns an AST of it's Markdown conversion
+    """
+
+    text = _extract_pdf(path)
+    markdown = _llm_convert_to_md(text)
+    ast = _to_ast(markdown)
+
+    return ast
