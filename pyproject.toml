@@ -17,7 +17,14 @@ spacy = "^3.7.5"
 ru-core-news-sm = {url = "https://github.com/explosion/spacy-models/releases/download/ru_core_news_sm-3.7.0/ru_core_news_sm-3.7.0.tar.gz"}
 pdfminer-six = "^20240706"
 qdrant-client = "^1.10.1"
+torch = {version = "^2.3.1+cpu", source = "pytorch_cpu"}
+sentence-transformers = "^3.0.1"
 
+
+[[tool.poetry.source]]
+name = "pytorch_cpu"
+url = "https://download.pytorch.org/whl/cpu"
+priority = "explicit"
 
 [build-system]
 requires = ["poetry-core"]
