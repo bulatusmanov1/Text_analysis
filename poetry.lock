@@ -940,6 +940,17 @@ files = [
 ]
 
 [[package]]
+name = "mistletoe"
+version = "1.3.0"
+description = "A fast, extensible Markdown parser in pure Python."
+optional = false
+python-versions = "~=3.5"
+files = [
+    {file = "mistletoe-1.3.0-py3-none-any.whl", hash = "sha256:a0710d0cdb7d2458cef91cf6b9b897db442927f8778dae890cbbfb1853a51700"},
+    {file = "mistletoe-1.3.0.tar.gz", hash = "sha256:bd0e788add9b4478d19ec792f6d5fb908a20e70abfe61193f29178c55d3adbe9"},
+]
+
+[[package]]
 name = "murmurhash"
 version = "1.0.10"
 description = "Cython bindings for MurmurHash"
@@ -2052,4 +2063,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a1560f2ba51b576a0f3c9470ce8d557389fd06c731c37f80e58846806fd3ccda"
+content-hash = "49960268bbd3f13b6c91e647365e9094c7c246b14db92e5a37a4d4c1d057d744"
