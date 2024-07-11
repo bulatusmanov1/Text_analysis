@@ -37,6 +37,9 @@ def _to_ast(markdown: str) -> List[Dict]:
     par = ""
     for line in markdown.splitlines() + [""]:
         if line.startswith("#") or line == "":
+            if par == "":
+                continue
+
             out.append(
                 {
                     "type": "paragraph",
