@@ -9,59 +9,31 @@ def creating_collection(collection_name: str = "data"):
             collection_name=collection_name,
             vectors_config=models.VectorParams(size=128, distance=models.Distance.COSINE)
         )
+        return f"Коллекция '{collection_name}' создана."
     except:
         raise Exception(f"Коллекция '{collection_name}' не создана.")
     
-def add_to_collection():
-    pass
+def add_to_collection(vectors, payloads, collection_name = "data"):
+    try:
+        points = []
+        for i, (vector, payload) in enumerate(zip(vectors, payloads)):
+            points.append(models.PointStruct(id=i, vector=vector, payload=payload))
 
+        client.upsert(
+            collection_name=collection_name,
+            points=points
+        )
+        return f"Добавление в коллекцию '{collection_name}' успешно."
+    except:
+        raise Exception(f"Добавление в коллекцию '{collection_name}' провалилось.")
 
-def main():
-    client = QdrantClient(path="data.txt") 
-
-    # Создание коллекции
-    collection_name = 'example_collection'
-    client.recreate_collection(
-        collection_name=collection_name,
-        vectors_config=models.VectorParams(size=128, distance=models.Distance.COSINE)
-    )
-
-    print(f"Коллекция '{collection_name}' создана.")
-
-    # Добавление данных в коллекцию
-    vectors = [
-        [0.1] * 128,
-        [0.2] * 128,
-        [0.3] * 128,
-    ]
-
-    payloads = [
-        {"id": 1, "data": "Первая запись"},
-        {"id": 2, "data": "Вторая запись"},
-        {"id": 3, "data": "Третья запись"},
-    ]
-
-    points = []
-    for i, (vector, payload) in enumerate(zip(vectors, payloads)):
-        points.append(models.PointStruct(id=i, vector=vector, payload=payload))
-
-    client.upsert(
-        collection_name=collection_name,
-        points=points
-    )
-
-    print(f"Добавлено {len(points)} точек в коллекцию '{collection_name}'.")
-
-    # Запрос к коллекции
-    query_vector = [0.15] * 128
-    search_result = client.search(
-        collection_name=collection_name,
-        query_vector=query_vector,
-        limit=3
-    )
-
-    for hit in search_result:
-        print(f"ID: {hit.id}, Оценка: {hit.score}, Данные: {hit.payload}")
-
-if __name__ == "__main__":
-    main()
+def get_from_collection(query_vector, limit = 3, collection_name = "data"):
+    try:
+        search_result = client.search(
+            collection_name=collection_name,
+            query_vector=query_vector,
+            limit=limit
+        )
+        return f"Запрос к коллекции '{collection_name}' успешен."
+    except:
+        raise Exception(f"Запрос к коллекции '{collection_name}' провалился.")
