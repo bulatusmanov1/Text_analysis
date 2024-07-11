@@ -7,7 +7,7 @@ from .convert import AST
 
 NLP = spacy.load("ru_core_news_sm")
 
-Mode = Literal["period", "line", "spacy", "nltk"]
+Mode = Literal["period", "spacy", "nltk"]
 Sentence = Dict
 
 
@@ -15,8 +15,6 @@ def _split_into_sentences(text: str, mode: Mode) -> List[str]:
     match mode:
         case "period":
             sentences = text.split(".")
-        case "line":
-            sentences = text.split("\n")
         case "spacy":
             sentences = [sent.text.strip() for sent in NLP(text).sents]
         case "nltk":
