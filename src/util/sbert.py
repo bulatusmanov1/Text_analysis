@@ -7,18 +7,17 @@ Model = Literal["paraphrase", "distiluse"]
 MODEL = None
 MODEL_TYPE = "paraphrase"
 
-
-def _model(model: Model) -> SentenceTransformer:
-    match model:
-        case "paraphrase":
-            return SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
-        case "distiluse":
-            return SentenceTransformer("distiluse-base-multilingual-cased-v1")
-
+paraphrase = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+distiluse = SentenceTransformer("distiluse-base-multilingual-cased-v1")
 
 def embed(sentence: str, model: Model) -> np.array:
-    # don't recreate the model from scratch for each sentence
     if type(MODEL) is None or MODEL_TYPE != model:
-        MODEL = _model(model)
+        match model:
+            case "paraphrase":
+                MODEL = paraphrase
+            case "distiluse":
+                MODEL = distiluse
 
     return MODEL.encode(sentence)
+
+print(embed("Грету добивает телефонный звонок, где на том конце детский голос просит её соблюдать правила — у неё появляется подозрение, что дух Брамса вселился в куклу."))
