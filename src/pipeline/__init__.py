@@ -20,7 +20,7 @@ def pipeline(
         ast = convert.convert(path)
         sentences = sentence.sentences(ast, sentence_mode)
         chunks = chunk.chunk(sentences, chunk_mode)
-        embeds = embed.embed(chunk, embed_model, embed_edit_mode)
+        embeds = embed.embed(chunks, embed_model, embed_edit_mode)
 
         qdrant.creating_collection(collection_name=id)
 
