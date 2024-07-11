@@ -21,7 +21,7 @@ Payload = Dict
 
 def embed(
     chunks: List[Chunk], model: Model, edit_mode: EditMode
-) -> List[Tuple[np.array, Payload]]
+) -> List[Tuple[np.array, Payload]]:
     """
     Create a list of embeddings and their payloads from chunks.
     """
