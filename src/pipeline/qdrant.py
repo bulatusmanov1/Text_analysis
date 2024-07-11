@@ -1,13 +1,13 @@
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
 
-client = QdrantClient(path="data.txt") 
+client = QdrantClient(path="data.db") 
 
-def creating_collection(collection_name: str = "data"):
+def creating_collection(size = 128, collection_name: str = "data"):
     try:
         client.recreate_collection(
             collection_name=collection_name,
-            vectors_config=models.VectorParams(size=128, distance=models.Distance.COSINE)
+            vectors_config=models.VectorParams(size=size, distance=models.Distance.COSINE)
         )
         return f"Коллекция '{collection_name}' создана."
     except:
