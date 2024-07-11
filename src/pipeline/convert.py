@@ -8,6 +8,8 @@ from typing import List, Dict
 
 from ..util import yapi
 
+type AST = Dict
+
 
 def _extract_pdf(path: str) -> str:
     return extract_text(path)
@@ -60,7 +62,7 @@ def _to_ast(markdown: str) -> List[Dict]:
     return out
 
 
-def convert(path: str) -> List[Dict]:
+def convert(path: str) -> List[AST]:
     """
     Takes a path to a PDF file and returns an AST of it's Markdown conversion
     """

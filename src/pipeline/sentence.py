@@ -3,9 +3,12 @@ import spacy
 
 from typing import Literal, List, Dict
 
+from .convert import AST
+
 NLP = spacy.load("ru_core_news_sm")
 
 type Mode = Literal["period", "line", "spacy", "nltk"]
+type Sentence = Dict
 
 
 def _split_into_sentences(text: str, mode: Mode) -> List[str]:
@@ -19,11 +22,11 @@ def _split_into_sentences(text: str, mode: Mode) -> List[str]:
         case "nltk":
             sentences = sent_tokenize(text)
         case _:
-            raise Exception("Выберете доступный режим: period, line, spacy, nltk")
+            raise Exception("Выберите доступный режим: period, line, spacy, nltk")
     return sentences
 
 
-def sentences(ast: List[Dict], mode: Mode) -> List[Dict]:
+def sentences(ast: List[AST], mode: Mode) -> List[Sentence]:
     out = []
 
     heading_top = ""
