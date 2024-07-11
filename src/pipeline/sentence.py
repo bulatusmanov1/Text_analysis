@@ -23,7 +23,7 @@ def _split_into_sentences(text: str, mode: Mode) -> List[str]:
     return sentences
 
 
-def sentences(ast: List[Dict]) -> List[Dict]:
+def sentences(ast: List[Dict], mode: Mode) -> List[Dict]:
     out = []
 
     heading_top = ""
@@ -45,7 +45,7 @@ def sentences(ast: List[Dict]) -> List[Dict]:
                 )
 
             case "paragraph":
-                sentences = _split_into_sentences(el["content"])
+                sentences = _split_into_sentences(el["content"], mode)
 
                 for sentence in sentences:
                     out.append(
