@@ -1,5 +1,5 @@
 """
-Yandex Cloud API shims
+Yandex Cloud foundation models API wrappers.
 """
 
 import requests
@@ -7,7 +7,7 @@ import numpy as np
 
 import os
 from datetime import datetime, timedelta
-from typing import Optional, List
+from typing import Optional, List, Dict
 
 FOLDER_ID = os.environ["FOLDER_ID"]
 OAUTH_TOKEN = os.environ["OAUTH_TOKEN"]
@@ -28,7 +28,7 @@ GPTLITE_URI = f"gpt://{FOLDER_ID}/yandexgpt-lite/latest"
 SUMMARY_URI = f"gpt://{FOLDER_ID}/summarization/latest"
 
 
-def iam_token() -> str:
+def _iam_token() -> str:
     if datetime.now() - __IAM_TIME < timedelta(hours=1):
         return __IAM_TOKEN
 
@@ -39,21 +39,28 @@ def iam_token() -> str:
     return r.json()["iamToken"]
 
 
-def headers():
+def _headers():
     return {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {iam_token()}",
+        "Authorization": f"Bearer {_iam_token()}",
         "x-folder-id": f"{FOLDER_ID}",
     }
 
 
-def embedding(text: str, model: str = "doc") -> np.ndarray:
+def embedding(text: str, model: str = "doc") -> np.array:
+    """
+    Get embedding of a string and return it as a 256-element NumPy array
+
+    Keyword arguments:
+    text -- text to embed
+    model -- "doc" for document embedding and "query" for search embedding
+    """
     payload = {
         "modelUri": DOC_URI if model == "doc" else QUERY_URI,
         "text": text,
     }
 
-    r = requests.post(EMBEDDING_URL, json=payload, headers=headers())
+    r = requests.post(EMBEDDING_URL, json=payload, headers=_headers())
     r.raise_for_status()
 
     return np.array(r.json()["embedding"])
@@ -76,6 +83,16 @@ def complete(
     max_tokens: int = 1000,
     model: str = "lite",
 ) -> str:
+    """
+    Complete a query using a Yandex Foundation Model and return the answer
+
+    Keyword arguments:
+    query -- the input query, which has the user role (aka context)
+    instruction -- if it's passed, the model will get a system-role command
+    temperature -- must be in range 0-1, determines the model's randomness
+    max_tokens -- limits the amout of tokens the model will output
+    model -- "lite", "pro", or "summary"
+    """
     messages = [{"role": "user", "text": query}]
     if instruction is not None:
         messages.insert(0, {"role": "system", "text": instruction})
@@ -90,19 +107,26 @@ def complete(
         "messages": messages,
     }
 
-    r = requests.post(COMPLETION_URL, json=payload, headers=headers())
+    r = requests.post(COMPLETION_URL, json=payload, headers=_headers())
 
     text = r.json()["result"]["alternatives"][0]["message"]["text"]
 
     return text
 
 
-def tokenize(text: str, model: str = "lite") -> List[str]:
+def tokenize(text: str, model: str = "lite") -> List[Dict]:
+    """
+    Returns tokenized text for a given model
+
+    Keyword arguments:
+    text -- text to tokenize
+    model -- "lite", "pro", or "summary"
+    """
     payload = {
         "modelUri": _model_uri(model),
         "text": text,
     }
 
-    r = requests.post(TOKENIZE_URL, json=payload, headers=headers())
+    r = requests.post(TOKENIZE_URL, json=payload, headers=_headers())
 
     return r.json()["tokens"]
