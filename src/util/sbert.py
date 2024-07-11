@@ -7,6 +7,7 @@ type Model = Literal["paraphrase", "distiluse"]
 MODEL = None
 MODEL_TYPE = "paraphrase"
 
+
 def _model(model: Model) -> SentenceTransformer:
     match model:
         case "paraphrase":

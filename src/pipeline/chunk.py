@@ -6,7 +6,11 @@ from typing import List, Literal, Dict
 
 from .sentence import Sentence
 
-type Mode = Literal["sentence", "section", "window", ]
+type Mode = Literal[
+    "sentence",
+    "section",
+    "window",
+]
 type Chunk = Dict
 
 
