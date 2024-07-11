@@ -34,6 +34,6 @@ def get_from_collection(query_vector, limit = 3, collection_name = "data"):
             query_vector=query_vector,
             limit=limit
         )
-        return f"Запрос к коллекции '{collection_name}' успешен."
+        return search_result
     except:
         raise Exception(f"Запрос к коллекции '{collection_name}' провалился.")
