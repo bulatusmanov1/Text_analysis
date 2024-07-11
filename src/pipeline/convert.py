@@ -8,7 +8,7 @@ from typing import List, Dict
 
 from ..util import yapi
 
-type AST = Dict
+AST = Dict
 
 
 def _extract_pdf(path: str) -> str:

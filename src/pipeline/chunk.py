@@ -6,12 +6,12 @@ from typing import List, Literal, Dict
 
 from .sentence import Sentence
 
-type Mode = Literal[
+Mode = Literal[
     "sentence",
     "section",
     "window",
 ]
-type Chunk = Dict
+Chunk = Dict
 
 
 def chunk(sentences: List[Sentence], mode: Mode) -> List[Chunk]:

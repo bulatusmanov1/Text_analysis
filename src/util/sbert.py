@@ -3,7 +3,7 @@ import numpy as np
 
 from typing import Literal
 
-type Model = Literal["paraphrase", "distiluse"]
+Model = Literal["paraphrase", "distiluse"]
 MODEL = None
 MODEL_TYPE = "paraphrase"
 

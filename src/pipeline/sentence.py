@@ -7,8 +7,8 @@ from .convert import AST
 
 NLP = spacy.load("ru_core_news_sm")
 
-type Mode = Literal["period", "line", "spacy", "nltk"]
-type Sentence = Dict
+Mode = Literal["period", "line", "spacy", "nltk"]
+Sentence = Dict
 
 
 def _split_into_sentences(text: str, mode: Mode) -> List[str]:
