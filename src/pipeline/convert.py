@@ -35,7 +35,7 @@ def _to_ast(markdown: str) -> List[Dict]:
     out = []
 
     par = ""
-    for line in markdown.splitlines():
+    for line in markdown.splitlines() + [""]:
         if line.startswith("#") or line == "":
             out.append(
                 {
@@ -55,13 +55,5 @@ def _to_ast(markdown: str) -> List[Dict]:
             continue
 
         par += line
-
-    # last paragraph
-    out.append(
-        {
-            "type": "paragraph",
-            "content": par,
-        }
-    )
 
     return out
