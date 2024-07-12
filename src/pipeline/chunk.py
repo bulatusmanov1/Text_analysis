@@ -23,30 +23,56 @@ def chunk(sentences: List[Sentence], mode: Mode) -> List[Chunk]:
 
 
 def _chunk_sentences(sentences: List[Sentence]) -> List[Chunk]:
-    return sentences
+    out = []
+
+    for sentence in sentences:
+        out.append(
+            {
+                "content": sentence["content"],
+                "heading": sentence["heading"],
+                "line_start": sentence["line"],
+                "line_end": sentence["line"],
+                "page_start": sentence["page"],
+                "page_end": sentence["page"],
+            }
+        )
+
+    return out
 
 
 def _chunk_sections(sentences: List[Sentence]) -> List[Chunk]:
     out = []
 
     heading = None
-    heading_top = None
+    line_start = 0
+    page_start = 0
+    line_end = 0
+    page_end = 0
     content = ""
 
     for sentence in sentences:
         if type(heading) is None:
             heading = sentence["heading"]
-            heading_top = sentence["heading_top"]
+            line_start = sentence["line"]
+            page_start = sentence["page"]
 
         if heading == sentence["heading"]:
             content += sentence["heading"]
+            line_end = sentence["line"]
+            page_end = sentence["page"]
         else:
             out.append(
-                {"content": content, "heading": heading, "heading_top": heading_top}
+                {
+                    "content": content,
+                    "heading": heading,
+                    "line_start": line_start,
+                    "line_end": line_end,
+                    "page_start": page_start,
+                    "page_end": page_end,
+                }
             )
 
             heading = sentence["heading"]
-            heading_top = sentence["heading_top"]
             content = sentence["heading"]
 
     return out
