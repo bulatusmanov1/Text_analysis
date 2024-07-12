@@ -14,17 +14,13 @@ def creating_collection(size=128, collection_name: str = "data"):
     )
 
 
-def add_to_collection(vectors, payloads, collection_name="data"):
-    try:
-        points = []
+def upsert(embeds, collection_name="data"):
+    points = []
 
-        for vector, payload in zip(vectors, payloads):
-            points.append(PointStruct(id=uuid.uuid4(), vector=vector, payload=payload))
+    for vector, payload in embeds:
+        points.append(PointStruct(id=uuid.uuid4(), vector=vector, payload=payload))
 
-        CLIENT.upsert(collection_name=collection_name, points=points)
-        return f"Добавление в коллекцию '{collection_name}' успешно."
-    except:
-        raise Exception(f"Добавление в коллекцию '{collection_name}' провалилось.")
+    CLIENT.upsert(collection_name=collection_name, points=points)
 
 
 def get_from_collection(query_vector, limit=3, collection_name="data"):
