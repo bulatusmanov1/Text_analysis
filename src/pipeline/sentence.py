@@ -16,21 +16,16 @@ def _split_into_sentences(text: str) -> List[str]:
 def sentences(ast: List[AST]) -> List[Sentence]:
     out = []
 
-    heading_top = ""
-    heading_curr = ""
-
+    heading = ""
     for el in ast:
         match el["type"]:
             case "heading":
-                if el["level"] == 1:
-                    heading_top = el["content"]
-                heading_curr = el["content"]
+                heading = el["content"]
 
                 out.append(
                     {
                         "content": el["content"],
-                        "heading": heading_curr,
-                        "heading_top": heading_top,
+                        "heading": heading,
                     }
                 )
 
@@ -41,8 +36,7 @@ def sentences(ast: List[AST]) -> List[Sentence]:
                     out.append(
                         {
                             "content": sentence,
-                            "heading": heading_curr,
-                            "heading_top": heading_top,
+                            "heading": heading,
                         }
                     )
 
