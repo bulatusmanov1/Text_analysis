@@ -136,13 +136,13 @@ def tokenize(text: str, model: str = "lite") -> List[Dict]:
 
 
 def ocr(pdf: bytes):
-    content = base64.b64encode(content).decode("ascii")
+    content = base64.b64encode(pdf).decode("ascii")
 
     payload = {
         "mimeType": "application/pdf",
         "languageCodes": ["ru", "en"],
         "model": "page",
-        "content": content64,
+        "content": content,
     }
 
     r = requests.post(OCR_URL, json=payload, headers=_headers())
