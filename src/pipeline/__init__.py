@@ -1,13 +1,12 @@
 from . import md, sentence, chunk, embed, qdrant
 from chunk import Mode as ChunkMode
-from embed import Model as EmbedModel, EditMode as EmbedEditMode
+from embed import EditMode as EmbedEditMode
 
 
 def pipeline(
     num: int,
     dir: str,
     chunk_mode: ChunkMode,
-    embed_model: EmbedModel,
     embed_edit_mode: EmbedEditMode,
 ):
     id = f"{sentence_mode}+{chunk_mode}+{embed_model}+{embed_edit_mode}"

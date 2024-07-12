@@ -9,8 +9,6 @@ from typing import Literal, List, Tuple, Dict
 from .chunk import Chunk
 from ..util import yapi
 
-# Which embedding model to use
-Model = Literal["yandex"]
 # How to process the chunk contents.
 # - "plain" leaves the content as it.
 # - "heading" prepends the current heading.
@@ -20,7 +18,7 @@ Payload = Dict
 
 
 def embed(
-    chunks: List[Chunk], model: Model, edit_mode: EditMode
+    chunks: List[Chunk], edit_mode: EditMode
 ) -> List[Tuple[np.array, Payload]]:
     """
     Create a list of embeddings and their payloads from chunks.
