@@ -28,8 +28,13 @@ def embed(chunks: List[Chunk], mode: Mode) -> List[Tuple[np.array, Payload]]:
         content = _edit_chunk(chunk, edit_mode)
         embed = yapi.embedding(content)
 
-        # TODO figure out dict parameters
-        out.append((embed, {}))
+        payload = {
+            "line_start": line_start,
+            "line_end": line_end,
+            "page_start": page_start,
+            "page_end": page_end,
+        }
+        out.append((embed, payload))
 
     return out
 
