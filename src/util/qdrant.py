@@ -1,6 +1,7 @@
 from qdrant_client import QdrantClient
 from qdrant_client.http import models
-import random
+
+import uuid
 
 QDRANT_DB_PATH = "vector_db"
 CLIENT = QdrantClient(path=QDRANT_DB_PATH)
@@ -25,9 +26,7 @@ def add_to_collection(vectors, payloads, collection_name="data"):
 
         for vector, payload in zip(vectors, payloads):
             points.append(
-                models.PointStruct(
-                    id=random.randint(1, 10**10), vector=vector, payload=payload
-                )
+                models.PointStruct(id=uuid.uuid4(), vector=vector, payload=payload)
             )
 
         CLIENT.upsert(collection_name=collection_name, points=points)
