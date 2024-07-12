@@ -7,29 +7,22 @@ from typing import List, Dict
 AST = Dict
 
 
-def _count_hashes(line: str) -> int:
-    out = 0
+def convert(md: str) -> List[AST]:
+    """
+    Takes a path to a PDF file and returns an AST of it's Markdown conversion
+    """
 
-    for char in line:
-        if char == "#":
-            out += 1
-        else:
-            break
-
-    return out
-
-
-def _to_ast(markdown: str) -> List[Dict]:
     out = []
 
     par = ""
-    for line in markdown.splitlines() + [""]:
+    for (i, line) in enumerate(md.splitlines() + [""]):
         if line.startswith("#") or line == "":
             if par != "":
                 out.append(
                     {
                         "type": "paragraph",
                         "content": par,
+                        "line": i,
                     }
                 )
 
@@ -38,7 +31,7 @@ def _to_ast(markdown: str) -> List[Dict]:
                 {
                     "type": "heading",
                     "content": line.strip(" #"),
-                    "level": _count_hashes(line),
+                    "line": i,
                 }
             )
             continue
@@ -46,13 +39,3 @@ def _to_ast(markdown: str) -> List[Dict]:
         par += line
 
     return out
-
-
-def convert(md: str) -> List[AST]:
-    """
-    Takes a path to a PDF file and returns an AST of it's Markdown conversion
-    """
-
-    ast = _to_ast(markdown)
-
-    return ast
