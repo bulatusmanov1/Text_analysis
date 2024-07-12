@@ -7,10 +7,10 @@ import numpy as np
 from typing import Literal, List, Tuple, Dict
 
 from .chunk import Chunk
-from ..util import sbert, yapi
+from ..util import yapi
 
 # Which embedding model to use
-Model = Literal["yandex", "sbert/paraphrase", "sbert/distiluse"]
+Model = Literal["yandex"]
 # How to process the chunk contents.
 # - "plain" leaves the content as it.
 # - "heading" prepends the current heading.
@@ -30,14 +30,7 @@ def embed(
 
     for chunk in chunks:
         content = _edit_chunk(chunk, edit_mode)
-        embed = None
-        match model:
-            case "yandex":
-                embed = yapi.embedding(content)
-            case "sbert/paraphrase":
-                embed = sbert.embed(content, "paraphrase")
-            case "sbert/distiluse":
-                embed = sbert.embed(content, "distiluse")
+        embed = yapi.embedding(content)
 
         # TODO figure out dict parameters
         out.append((embed, {}))
