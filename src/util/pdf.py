@@ -9,7 +9,7 @@ def edit_pdf(path: str, action: Literal["delete", "rotate"], num: int):
             case "delete":
                 del pdf.pages[num]
             case "rotate":
-                pdf.pages[num].rotate(90)
+                pdf.pages[num].rotate(90, True)
         pdf.save()
 
 
