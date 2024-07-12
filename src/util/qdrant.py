@@ -1,5 +1,5 @@
 from qdrant_client import QdrantClient
-from qdrant_client.http import models
+from qdrant_client.models import VectorParams, Distance, PointStruct
 
 import uuid
 
@@ -8,16 +8,10 @@ CLIENT = QdrantClient(path=QDRANT_DB_PATH)
 
 
 def creating_collection(size=128, collection_name: str = "data"):
-    try:
-        CLIENT.recreate_collection(
-            collection_name=collection_name,
-            vectors_config=models.VectorParams(
-                size=size, distance=models.Distance.COSINE
-            ),
-        )
-        return f"Коллекция '{collection_name}' создана."
-    except:
-        raise Exception(f"Коллекция '{collection_name}' не создана.")
+    CLIENT.recreate_collection(
+        collection_name=collection_name,
+        vectors_config=VectorParams(size=size, distance=Distance.COSINE),
+    )
 
 
 def add_to_collection(vectors, payloads, collection_name="data"):
@@ -25,9 +19,7 @@ def add_to_collection(vectors, payloads, collection_name="data"):
         points = []
 
         for vector, payload in zip(vectors, payloads):
-            points.append(
-                models.PointStruct(id=uuid.uuid4(), vector=vector, payload=payload)
-            )
+            points.append(PointStruct(id=uuid.uuid4(), vector=vector, payload=payload))
 
         CLIENT.upsert(collection_name=collection_name, points=points)
         return f"Добавление в коллекцию '{collection_name}' успешно."
