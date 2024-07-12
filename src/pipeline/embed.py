@@ -24,14 +24,14 @@ def embed(chunks: List[Chunk], mode: Mode) -> List[Tuple[np.array, Payload]]:
     out = []
 
     for chunk in chunks:
-        content = _edit_chunk(chunk, edit_mode)
+        content = _edit_chunk(chunk, mode)
         embed = yapi.embedding(content)
 
         payload = {
-            "line_start": line_start,
-            "line_end": line_end,
-            "page_start": page_start,
-            "page_end": page_end,
+            "line_start": chunk["line_start"],
+            "line_end": chunk["line_end"],
+            "page_start": chunk["page_start"],
+            "page_end": chunk["page_end"],
         }
         out.append((embed, payload))
 
