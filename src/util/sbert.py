@@ -8,6 +8,7 @@ Model = Literal["paraphrase", "distiluse"]
 paraphrase = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 distiluse = SentenceTransformer("distiluse-base-multilingual-cased-v1")
 
+
 def embed(sentence: str, model: Model) -> np.array:
     match model:
         case "paraphrase":
