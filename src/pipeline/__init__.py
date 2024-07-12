@@ -1,13 +1,13 @@
 from . import md, sentence, chunk, embed, qdrant
 from chunk import Mode as ChunkMode
-from embed import EditMode as EmbedEditMode
+from embed import Mode as EmbedMode
 
 
 def pipeline(
     num: int,
     dir: str,
     chunk_mode: ChunkMode,
-    embed_edit_mode: EmbedEditMode,
+    embed_mode: EmbedMode,
 ):
     id = f"{sentence_mode}+{chunk_mode}+{embed_model}+{embed_edit_mode}"
 
@@ -17,7 +17,7 @@ def pipeline(
         ast = md.ast(path)
         sentences = sentence.sentences(ast)
         chunks = chunk.chunk(sentences, chunk_mode)
-        embeds = embed.embed(chunks, embed_model, embed_edit_mode)
+        embeds = embed.embed(chunks, embed_mode)
 
         qdrant.creating_collection(collection_name=id)
 

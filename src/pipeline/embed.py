@@ -13,12 +13,12 @@ from ..util import yapi
 # - "plain" leaves the content as it.
 # - "heading" prepends the current heading.
 # - "both-headings" prepends both the top level and the current headings
-EditMode = Literal["plain", "heading", "both-headings"]
+Mode = Literal["plain", "heading", "both-headings"]
 Payload = Dict
 
 
 def embed(
-    chunks: List[Chunk], edit_mode: EditMode
+    chunks: List[Chunk], mode: Mode
 ) -> List[Tuple[np.array, Payload]]:
     """
     Create a list of embeddings and their payloads from chunks.
@@ -36,7 +36,7 @@ def embed(
     return out
 
 
-def _edit_chunk(chunk: Chunk, mode: EditMode) -> str:
+def _edit_chunk(chunk: Chunk, mode: Mode) -> str:
     match mode:
         case "plain":
             return chunk["content"]
