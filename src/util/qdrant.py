@@ -7,26 +7,26 @@ QDRANT_DB_PATH = "vector_db"
 CLIENT = QdrantClient(path=QDRANT_DB_PATH)
 
 
-def creating_collection(size=128, collection_name: str = "data"):
+def creating_collection(size=128, collection_name: str = "default"):
     CLIENT.recreate_collection(
-        collection_name=collection_name,
+        collection_name=collection,
         vectors_config=VectorParams(size=size, distance=Distance.COSINE),
     )
 
 
-def upsert(embeds, collection_name="data"):
+def upsert(embeds, collection: str = "default"):
     points = []
 
     for vector, payload in embeds:
         points.append(PointStruct(id=uuid.uuid4(), vector=vector, payload=payload))
 
-    CLIENT.upsert(collection_name=collection_name, points=points)
+    CLIENT.upsert(collection_name=collection, points=points)
 
 
-def get_from_collection(query_vector, limit=3, collection_name="data"):
+def get_from_collection(query_vector, limit=3, collection: str = "default"):
     try:
         search_result = CLIENT.search(
-            collection_name=collection_name, query_vector=query_vector, limit=limit
+            collection_name=collection, query_vector=query_vector, limit=limit
         )
         return search_result
     except:
