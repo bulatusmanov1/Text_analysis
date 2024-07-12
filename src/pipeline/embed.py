@@ -12,8 +12,7 @@ from ..util import yapi
 # How to process the chunk contents.
 # - "plain" leaves the content as it.
 # - "heading" prepends the current heading.
-# - "both-headings" prepends both the top level and the current headings
-Mode = Literal["plain", "heading", "both-headings"]
+Mode = Literal["plain", "heading"]
 Payload = Dict
 
 
@@ -45,5 +44,3 @@ def _edit_chunk(chunk: Chunk, mode: Mode) -> str:
             return chunk["content"]
         case "heading":
             return f"{chunk['heading']} {chunk['content']}"
-        case "both-headings":
-            return f"{chunk['heading_top']} {chunk['heading']} {chunk['content']}"
