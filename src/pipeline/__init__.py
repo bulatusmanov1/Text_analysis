@@ -1,4 +1,4 @@
-from . import convert, sentence, chunk, embed, qdrant
+from . import md, sentence, chunk, embed, qdrant
 from sentence import Mode as SentenceMode
 from chunk import Mode as ChunkMode
 from embed import Model as EmbedModel, EditMode as EmbedEditMode
@@ -17,7 +17,7 @@ def pipeline(
     for i in range(1, num):
         path = f"{dir}{_filename(i)}"
 
-        ast = convert.convert(path)
+        ast = md.convert(path)
         sentences = sentence.sentences(ast, sentence_mode)
         chunks = chunk.chunk(sentences, chunk_mode)
         embeds = embed.embed(chunks, embed_model, embed_edit_mode)

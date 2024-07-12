@@ -2,23 +2,9 @@
 Module for converting PDF files into a Markdown AST-like structure.
 """
 
-from pdfminer.high_level import extract_text
-
 from typing import List, Dict
 
-from ..util import yapi
-
 AST = Dict
-
-
-def _extract_pdf(path: str) -> str:
-    return extract_text(path)
-
-
-def _llm_convert_to_md(text: str) -> str:
-    return yapi.complete(
-        text, instruction="Переведи текст в Markdown", max_tokens=2000, model="pro"
-    )
 
 
 def _count_hashes(line: str) -> int:
@@ -62,13 +48,11 @@ def _to_ast(markdown: str) -> List[Dict]:
     return out
 
 
-def convert(path: str) -> List[AST]:
+def convert(md: str) -> List[AST]:
     """
     Takes a path to a PDF file and returns an AST of it's Markdown conversion
     """
 
-    text = _extract_pdf(path)
-    markdown = _llm_convert_to_md(text)
     ast = _to_ast(markdown)
 
     return ast

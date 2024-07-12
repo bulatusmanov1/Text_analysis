@@ -3,7 +3,7 @@ import spacy
 
 from typing import Literal, List, Dict
 
-from .convert import AST
+from .md import AST
 
 NLP = spacy.load("ru_core_news_sm")
 
