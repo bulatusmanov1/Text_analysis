@@ -7,7 +7,7 @@ from typing import List, Dict
 AST = Dict
 
 
-def convert(md: str) -> List[AST]:
+def ast(md: str) -> List[AST]:
     """
     Takes a path to a PDF file and returns an AST of it's Markdown conversion
     """

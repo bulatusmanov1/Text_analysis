@@ -15,7 +15,7 @@ def pipeline(
     for i in range(1, num):
         path = f"{dir}{_filename(i)}"
 
-        ast = md.convert(path)
+        ast = md.ast(path)
         sentences = sentence.sentences(ast)
         chunks = chunk.chunk(sentences, chunk_mode)
         embeds = embed.embed(chunks, embed_model, embed_edit_mode)
