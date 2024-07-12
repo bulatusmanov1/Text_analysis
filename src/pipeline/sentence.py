@@ -27,6 +27,7 @@ def sentences(ast: List[AST]) -> List[Sentence]:
                         "content": el["content"],
                         "heading": heading,
                         "line": el["line"],
+                        "page": el["page"],
                     }
                 )
 
@@ -39,6 +40,7 @@ def sentences(ast: List[AST]) -> List[Sentence]:
                             "content": sentence,
                             "heading": heading,
                             "line": el["line"],
+                            "page": el["page"],
                         }
                     )
 
