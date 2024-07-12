@@ -1,6 +1,5 @@
 from pikepdf import Pdf
 
-import sys
 from io import BytesIO
 from typing import List
 

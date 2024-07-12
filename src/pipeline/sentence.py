@@ -1,6 +1,6 @@
 import spacy
 
-from typing import Literal, List, Dict
+from typing import List, Dict
 
 from .md import AST
 
