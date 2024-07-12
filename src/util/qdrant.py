@@ -1,5 +1,5 @@
 from qdrant_client import QdrantClient
-from qdrant_client.models import VectorParams, Distance, PointStruct
+from qdrant_client.models import VectorParams, Distance, PointStruct, ScoredPoint
 
 import uuid
 
@@ -7,14 +7,14 @@ QDRANT_DB_PATH = "vector_db"
 CLIENT = QdrantClient(path=QDRANT_DB_PATH)
 
 
-def creating_collection(size=128, collection_name: str = "default"):
+def creating_collection(size=128, collection_name: str = "default") -> None:
     CLIENT.recreate_collection(
         collection_name=collection,
         vectors_config=VectorParams(size=size, distance=Distance.COSINE),
     )
 
 
-def upsert(embeds, collection: str = "default"):
+def upsert(embeds, collection: str = "default") -> None:
     points = []
 
     for vector, payload in embeds:
@@ -23,11 +23,10 @@ def upsert(embeds, collection: str = "default"):
     CLIENT.upsert(collection_name=collection, points=points)
 
 
-def get_from_collection(query_vector, limit=3, collection: str = "default"):
-    try:
-        search_result = CLIENT.search(
-            collection_name=collection, query_vector=query_vector, limit=limit
-        )
-        return search_result
-    except:
-        raise Exception(f"Запрос к коллекции '{collection_name}' провалился.")
+def get_from_collection(
+    query_vector, limit: int = 3, collection: str = "default"
+) -> ScoredPoint:
+    search_result = CLIENT.search(
+        collection_name=collection, query_vector=query_vector, limit=limit
+    )
+    return search_result
