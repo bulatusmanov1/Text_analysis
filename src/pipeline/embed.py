@@ -17,9 +17,7 @@ Mode = Literal["plain", "heading", "both-headings"]
 Payload = Dict
 
 
-def embed(
-    chunks: List[Chunk], mode: Mode
-) -> List[Tuple[np.array, Payload]]:
+def embed(chunks: List[Chunk], mode: Mode) -> List[Tuple[np.array, Payload]]:
     """
     Create a list of embeddings and their payloads from chunks.
     """
