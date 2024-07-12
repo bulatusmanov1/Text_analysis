@@ -9,7 +9,7 @@ def pipeline(
     chunk_mode: ChunkMode,
     embed_mode: EmbedMode,
 ):
-    id = f"{sentence_mode}+{chunk_mode}+{embed_model}+{embed_edit_mode}"
+    id = f"{chunk_mode}+{embed_mode}"
 
     for i in range(1, num):
         path = f"{dir}{_filename(i)}"
