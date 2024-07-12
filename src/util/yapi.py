@@ -6,6 +6,8 @@ import requests
 import numpy as np
 
 import os
+import json
+import base64
 from datetime import datetime, timedelta
 from typing import Optional, List, Dict
 
@@ -19,6 +21,7 @@ IAM_URL = "https://iam.api.cloud.yandex.net/iam/v1/tokens"
 EMBEDDING_URL = "https://llm.api.cloud.yandex.net:443/foundationModels/v1/textEmbedding"
 COMPLETION_URL = "https://llm.api.cloud.yandex.net/foundationModels/v1/completion"
 TOKENIZE_URL = "https://llm.api.cloud.yandex.net/foundationModels/v1/tokenize"
+OCR_URL = "https://ocr.api.cloud.yandex.net/ocr/v1/recognizeText"
 
 # derived constants
 DOC_URI = f"emb://{FOLDER_ID}/text-search-doc/latest"
@@ -130,3 +133,18 @@ def tokenize(text: str, model: str = "lite") -> List[Dict]:
     r = requests.post(TOKENIZE_URL, json=payload, headers=_headers())
 
     return r.json()["tokens"]
+
+
+def ocr(pdf: bytes):
+    content = base64.b64encode(content).decode("ascii")
+
+    payload = {
+        "mimeType": "application/pdf",
+        "languageCodes": ["ru", "en"],
+        "model": "page",
+        "content": content64,
+    }
+
+    r = requests.post(OCR_URL, json=payload, headers=_headers())
+
+    return r.json()
