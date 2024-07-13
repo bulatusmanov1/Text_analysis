@@ -7,7 +7,7 @@ QDRANT_DB_PATH = "vector_db"
 CLIENT = QdrantClient(path=QDRANT_DB_PATH)
 
 
-def creating_collection(size=128, collection_name: str = "default") -> None:
+def creating_collection(size=128, collection: str = "default") -> None:
     CLIENT.recreate_collection(
         collection_name=collection,
         vectors_config=VectorParams(size=size, distance=Distance.COSINE),
