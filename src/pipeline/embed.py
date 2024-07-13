@@ -28,6 +28,7 @@ def embed(chunks: List[Chunk], mode: Mode) -> List[Tuple[np.array, Payload]]:
         embed = yapi.embedding(content)
 
         payload = {
+            "content": chunk["content"]
             "line_start": chunk["line_start"],
             "line_end": chunk["line_end"],
             "page_start": chunk["page_start"],
