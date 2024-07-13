@@ -4,6 +4,7 @@ from io import BytesIO
 from typing import List
 import logging
 import sys
+import json
 
 from . import yapi
 
@@ -72,4 +73,4 @@ if __name__ == "__main__":
 
     for arg in sys.argv[1:]:
         pages = to_pages(f"data/pdf/{arg}.pdf")
-        open(f"data/md/{arg}.md", "w").write(json.dumps(pages))
+        open(f"data/md/{arg}.json", "w").write(json.dumps(pages))
