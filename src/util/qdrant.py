@@ -25,6 +25,4 @@ def upsert(embeds, collection: str = "default") -> None:
 
 
 def search(query: np.array, limit: int = 3, collection: str = "default") -> ScoredPoint:
-    return CLIENT.search(
-        collection_name=collection, query_vector=query, limit=limit
-    )
+    return CLIENT.search(collection_name=collection, query_vector=query, limit=limit)
