@@ -4,8 +4,8 @@ export def convert [...id: int] {
 }
 
 export def render [id: int] {
-	let dst_md = mktemp --tmpdir
-	let dst_html = mktemp --tmpdir
+	let dst_md = mktemp --tmpdir XXXXXX.md
+	let dst_html = mktemp --tmpdir XXXXXX.html
 
 	path-md $id
 		| open
@@ -13,7 +13,7 @@ export def render [id: int] {
 		| str replace --all --regex --multiline `[^|]\n\|` "\n\n|"
 		| save --force $dst_md
 
-	pandoc -s -o $dst_html $dst_md
+	pandoc -s -o $dst_html $dst_md --metadata $"title=Document ($id)"
 	rm --permanent $dst_md
 
 	$dst_html
