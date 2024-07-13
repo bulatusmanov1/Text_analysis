@@ -1,3 +1,4 @@
+import numpy as np
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct, ScoredPoint
 
@@ -23,10 +24,7 @@ def upsert(embeds, collection: str = "default") -> None:
     CLIENT.upsert(collection_name=collection, points=points)
 
 
-def get_from_collection(
-    query_vector, limit: int = 3, collection: str = "default"
-) -> ScoredPoint:
-    search_result = CLIENT.search(
-        collection_name=collection, query_vector=query_vector, limit=limit
+def search(query: np.array, limit: int = 3, collection: str = "default") -> ScoredPoint:
+    return CLIENT.search(
+        collection_name=collection, query_vector=query, limit=limit
     )
-    return search_result
