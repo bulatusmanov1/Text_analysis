@@ -3,6 +3,7 @@ from pikepdf import Pdf
 from io import BytesIO
 from typing import List
 import logging
+import sys
 
 from . import yapi
 
@@ -64,3 +65,11 @@ def to_pages(path: str) -> List[str]:
         out.append(md)
 
     return out
+
+
+if __name__ == "__main__":
+    logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+
+    for arg in sys.argv[1:]:
+        pages = to_pages(f"data/pdf/{arg}.pdf")
+        open(f"data/md/{arg}.md", "w").write(json.dumps(pages))
