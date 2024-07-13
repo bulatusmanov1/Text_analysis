@@ -10,8 +10,8 @@ export def render [id: int] {
 	path-md $id
 		| open
 		| str join "\n\n---\n\n"
-		| str replace --all --regex --multiline `[^|]\n\|` "\n\n|"
-		| str replace --all --regex --multiline `[^*]\n\*` "\n\n*"
+		| str replace --all --regex --multiline `[^|\n ]\n\|` "\n\n|"
+		| str replace --all --regex --multiline `[^*\n ]\n\*` "\n\n*"
 		| save --force $dst_md
 
 	pandoc -s -o $dst_html $dst_md --metadata $"title=Document ($id)"
