@@ -2,8 +2,11 @@ from pikepdf import Pdf
 
 from io import BytesIO
 from typing import List
+import logging
 
 from . import yapi
+
+LOGGER = logging.getLogger(__name__)
 
 
 def to_pdf_pages(path) -> List[bytes]:
@@ -50,9 +53,11 @@ def to_md(txt: str) -> str:
 
 def to_pages(path: str) -> List[str]:
     pdf_pages = to_pdf_pages(path)
+    LOGGER.info(f"Processing {path}")
 
     out = []
-    for pdf in pdf_pages:
+    for i, pdf in enumerate(pdf_pages):
+        LOGGER.info(f"\t- page {i+1}")
         json = yapi.ocr(pdf)
         txt = to_txt(json)
         md = to_md(txt)
