@@ -1,26 +1,38 @@
+from typing import List
+import json
+
 from . import md, sentence, chunk, embed, qdrant
 from chunk import Mode as ChunkMode
 from embed import Mode as EmbedMode
 
 
 def pipeline(
-    num: int,
-    dir: str,
+    docs: List[int],
     chunk_mode: ChunkMode,
     embed_mode: EmbedMode,
 ):
-    id = f"{chunk_mode}+{embed_mode}"
+    collection_id = f"{chunk_mode}+{embed_mode}"
+    qdrant.create_collection(collection=collection_id)
 
-    for i in range(1, num):
-        path = f"{dir}{_filename(i)}"
+    for doc in docs:
+        with open(f"data/md/{doc}.md", "r") as file:
+            content = file.read()
+        pages = json.loads(content)
 
-        ast = md.ast(path)
-        sentences = sentence.sentences(ast)
-        chunks = chunk.chunk(sentences, chunk_mode)
-        embeds = embed.embed(chunks, embed_mode)
-
-        qdrant.create_collection(collection_name=id)
+        for page in pages:
+            _process_page(page, page_idx, doc, chunk_mode, embed_mode)
 
 
-def _filename(index: int, extension: str = "pdf") -> str:
-    return f"{str(index):0>3}.{extension}"
+def _process_page(
+    page: str,
+    page_idx: int,
+    doc: int,
+    chunk_mode: ChunkMode,
+    embed_mode: EmbedMode,
+) -> None:
+    ast = md.ast(page, page=page_idx, document=doc)
+    sentences = sentence.sentences(ast)
+    chunks = chunk.chunk(sentences, chunk_mode)
+    embeds = embed.embed(chunks, embed_mode)
+
+    qdrant.insert(embeds)
