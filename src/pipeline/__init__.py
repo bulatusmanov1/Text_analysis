@@ -13,7 +13,7 @@ def pipeline(
     embed_mode: EmbedMode,
 ):
     collection_id = f"{chunk_mode}+{embed_mode}"
-    qdrant.create_collection(collection=collection_id, size=256)
+    qdrant.create_collection(collection=collection_id, size=384)
 
     for doc in docs:
         with open(f"/data/md/{doc}.json", "r") as file:
