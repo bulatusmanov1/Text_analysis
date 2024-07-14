@@ -15,7 +15,7 @@ def create_collection(size=128, collection: str = "default") -> None:
     )
 
 
-def upsert(embeds, collection: str = "default") -> None:
+def insert(embeds, collection: str = "default") -> None:
     points = []
 
     for vector, payload in embeds:
