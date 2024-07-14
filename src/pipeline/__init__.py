@@ -20,8 +20,8 @@ def pipeline(
             content = file.read()
         pages = json.loads(content)
 
-        for page in pages:
-            _process_page(page, page_idx, doc, chunk_mode, embed_mode)
+        for idx, page in enumerate(pages):
+            _process_page(page, idx, doc, chunk_mode, embed_mode)
 
 
 def _process_page(
