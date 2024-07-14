@@ -23,3 +23,20 @@ export def render [id: int] {
 def path-md [id: int] {
 	{ parent: "data/md/", stem: $id, extension: json } | path join
 }
+
+export def build [] {
+	docker build . --tag text_analysis
+}
+
+export def run [...args] {
+	(
+		docker run
+			-v ./data/:/data
+			--network=host
+			-e FOLDER_ID
+			-e OAUTH_TOKEN
+			text_analysis
+			poetry run python3
+			...$args
+	)
+}
