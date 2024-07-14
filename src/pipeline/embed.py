@@ -9,7 +9,7 @@ import asyncio
 from typing import Literal, List, Tuple, Dict
 
 from .chunk import Chunk
-from ..util import yapi
+from ..util import yapi, ratelimit
 
 # How to process the chunk contents.
 # - "plain" leaves the content as it.
@@ -26,10 +26,10 @@ def embed(chunks: List[Chunk], mode: Mode) -> List[Tuple[np.array, Payload]]:
     async def a():
         tasks = []
 
-        async with httpx.AsyncClient() as client:
+        async with ratelimit.RateLimitedClient(1, count=8) as client:
             async with asyncio.TaskGroup() as tg:
                 for chunk in chunks:
-                    task = tg.create_task(_embed_chunk(chunk, mode))
+                    task = tg.create_task(_embed_chunk(chunk, mode, client))
                     tasks.append(task)
 
         return tasks
@@ -40,9 +40,9 @@ def embed(chunks: List[Chunk], mode: Mode) -> List[Tuple[np.array, Payload]]:
     return out
 
 
-async def _embed_chunk(chunk, mode) -> Tuple[np.array, Payload]:
+async def _embed_chunk(chunk, mode, client) -> Tuple[np.array, Payload]:
     content = _edit_chunk(chunk, mode)
-    embed = yapi.embedding(content)
+    embed = await yapi.aembedding(content, client)
 
     payload = {
         "content": chunk["content"],
