@@ -73,7 +73,7 @@ def embedding(text: str, model: str = "doc") -> np.array:
 
 async def aembedding(text: str, client: httpx.AsyncClient) -> np.array:
     payload = {
-        "modelUri": DOC_URI if model == "doc" else QUERY_URI,
+        "modelUri": DOC_URI,
         "text": text,
     }
 
