@@ -9,7 +9,7 @@ from typing import Literal, List, Tuple, Dict
 
 from .chunk import Chunk
 
-EMBEDDER = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
+EMBEDDER = SentenceTransformer("/model/")
 
 # How to process the chunk contents.
 # - "plain" leaves the content as it.
@@ -27,7 +27,7 @@ def embed(chunks: List[Chunk], mode: Mode) -> List[Tuple[np.array, Payload]]:
 
     for chunk in chunks:
         content = _edit_chunk(chunk, mode)
-        embed = EMBEDDER.encode(content, client)
+        embed = "" # EMBEDDER.encode(content, client)
 
         payload = {
             "content": chunk["content"],
