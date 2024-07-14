@@ -9,12 +9,14 @@ from typing import List, Literal, Dict
 from .sentence import Sentence
 from ..util import yapi
 
-Mode = Literal["section", "size-256"]
+Mode = Literal["size-128", "size-256", "section"]
 Chunk = Dict
 
 
 def chunk(sentences: List[Sentence], mode: Mode) -> List[Chunk]:
     match mode:
+        case "size-128":
+            return _chunk_size(sentences, size=128)
         case "size-256":
             return _chunk_size(sentences, size=256)
         case "section":
