@@ -38,6 +38,8 @@ export def run [...args] {
 			--network=host
 			-e FOLDER_ID
 			-e OAUTH_TOKEN
+			-e CHUNK_MODE
+			-e EMBED_MODE
 			text_analysis
 			poetry run python3
 			--
