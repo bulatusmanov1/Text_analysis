@@ -32,11 +32,14 @@ export def run [...args] {
 	(
 		docker run
 			-v ./data/:/data
+			-v ./vector_db/:/vector_db
+			-v ./paraphrase-multilingual-MiniLM-L12-v2/:/model
 			--network=host
 			-e FOLDER_ID
 			-e OAUTH_TOKEN
 			text_analysis
 			poetry run python3
+			--
 			...$args
 	)
 }
