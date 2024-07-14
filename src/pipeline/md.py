@@ -27,6 +27,7 @@ def ast(md: str, page: int, document: int) -> List[AST]:
                         "document": document,
                     }
                 )
+            par = ""
 
         if line.startswith("#"):
             out.append(
