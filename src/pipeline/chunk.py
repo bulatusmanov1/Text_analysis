@@ -39,6 +39,7 @@ def _chunk_sentences(sentences: List[Sentence]) -> List[Chunk]:
                 "line_end": sentence["line"],
                 "page_start": sentence["page"],
                 "page_end": sentence["page"],
+                "document": sentence["document"],
             }
         )
 
@@ -74,6 +75,7 @@ def _chunk_sections(sentences: List[Sentence]) -> List[Chunk]:
                     "line_end": line_end,
                     "page_start": page_start,
                     "page_end": page_end,
+                    "document": sentence["document"],
                 }
             )
 
@@ -112,6 +114,7 @@ def _chunk_window(sentences: List[Sentence], threshold: float = 0.3) -> List[Chu
                     "line_end": line_end,
                     "page_start": page_start,
                     "page_end": page_end,
+                    "document": sentence["document"],
                 }
             )
         else:

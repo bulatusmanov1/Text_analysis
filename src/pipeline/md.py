@@ -7,7 +7,7 @@ from typing import List, Dict
 AST = Dict
 
 
-def ast(md: str, page: int) -> List[AST]:
+def ast(md: str, page: int, document: int) -> List[AST]:
     """
     Takes a path to a PDF file and returns an AST of it's Markdown conversion
     """
@@ -24,6 +24,7 @@ def ast(md: str, page: int) -> List[AST]:
                         "content": par,
                         "line": i,
                         "page": page,
+                        "document": document,
                     }
                 )
 
@@ -34,6 +35,7 @@ def ast(md: str, page: int) -> List[AST]:
                     "content": line.strip(" #"),
                     "line": i,
                     "page": page,
+                    "document": document,
                 }
             )
             continue
