@@ -1,9 +1,3 @@
 __pycache__
-# test data dir
-data/
-# test data
-*.pdf
-*.txt
-*.json
 # vector store
 vector_db/
