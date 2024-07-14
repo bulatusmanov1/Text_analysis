@@ -57,13 +57,13 @@ def _chunk_sections(sentences: List[Sentence]) -> List[Chunk]:
     content = ""
 
     for sentence in sentences:
-        if type(heading) is None:
+        if heading is None:
             heading = sentence["heading"]
             line_start = sentence["line"]
             page_start = sentence["page"]
 
         if heading == sentence["heading"]:
-            content += sentence["heading"]
+            content += f"{sentence['content']} "
             line_end = sentence["line"]
             page_end = sentence["page"]
         else:
