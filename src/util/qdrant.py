@@ -5,7 +5,7 @@ from qdrant_client.models import VectorParams, Distance, PointStruct, ScoredPoin
 import uuid
 from typing import List
 
-QDRANT_DB_PATH = "vector_db"
+QDRANT_DB_PATH = "/vector_db"
 CLIENT = QdrantClient(path=QDRANT_DB_PATH)
 
 
