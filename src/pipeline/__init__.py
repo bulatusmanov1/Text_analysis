@@ -19,7 +19,7 @@ def pipeline(
         chunks = chunk.chunk(sentences, chunk_mode)
         embeds = embed.embed(chunks, embed_mode)
 
-        qdrant.creating_collection(collection_name=id)
+        qdrant.create_collection(collection_name=id)
 
 
 def _filename(index: int, extension: str = "pdf") -> str:
