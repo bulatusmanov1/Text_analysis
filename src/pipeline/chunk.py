@@ -10,7 +10,6 @@ from .sentence import Sentence
 from ..util import yapi
 
 Mode = Literal[
-    "sentence",
     "section",
     "window",
 ]
@@ -19,31 +18,10 @@ Chunk = Dict
 
 def chunk(sentences: List[Sentence], mode: Mode) -> List[Chunk]:
     match mode:
-        case "sentence":
-            return _chunk_sentences(sentences)
         case "section":
             return _chunk_sections(sentences)
         case "window":
             return _chunk_window(sentences)
-
-
-def _chunk_sentences(sentences: List[Sentence]) -> List[Chunk]:
-    out = []
-
-    for sentence in sentences:
-        out.append(
-            {
-                "content": sentence["content"],
-                "heading": sentence["heading"],
-                "line_start": sentence["line"],
-                "line_end": sentence["line"],
-                "page_start": sentence["page"],
-                "page_end": sentence["page"],
-                "document": sentence["document"],
-            }
-        )
-
-    return out
 
 
 def _chunk_sections(sentences: List[Sentence]) -> List[Chunk]:
