@@ -61,6 +61,7 @@ def _chunk_sections(sentences: List[Sentence]) -> List[Chunk]:
 
     return out
 
+
 def _chunk_size(sentences: List[Sentence], size: int) -> List[Chunk]:
     out = []
 
