@@ -6,6 +6,7 @@ import requests
 import numpy as np
 
 import os
+import sys
 import base64
 from datetime import datetime, timedelta
 from typing import Optional, List, Dict
@@ -63,7 +64,8 @@ def embedding(text: str, model: str = "doc") -> np.array:
     }
 
     r = requests.post(EMBEDDING_URL, json=payload, headers=_headers())
-    r.raise_for_status()
+    if r.status_code != 200:
+        sys.exit(r.json())
 
     return np.array(r.json()["embedding"])
 
