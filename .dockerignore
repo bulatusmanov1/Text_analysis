@@ -1,6 +1,7 @@
-data/
 .git/
 .ruff_cache
-vector_db/
-toolkit.nu
+data/
+paraphrase-multilingual-MiniLM-L12-v2/
 poetry.lock
+toolkit.nu
+vector_db/
