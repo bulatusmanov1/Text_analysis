@@ -2,12 +2,9 @@
 Semantic sentence chunking
 """
 
-from scipy.spatial import distance
-
 from typing import List, Literal, Dict
 
 from .sentence import Sentence
-from ..util import yapi
 
 Mode = Literal["size-128", "size-256", "section"]
 Chunk = Dict
