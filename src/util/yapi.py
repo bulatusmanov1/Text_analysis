@@ -3,6 +3,7 @@ Yandex Cloud foundation models API wrappers.
 """
 
 import requests
+import httpx
 import numpy as np
 
 import os
@@ -64,6 +65,19 @@ def embedding(text: str, model: str = "doc") -> np.array:
     }
 
     r = requests.post(EMBEDDING_URL, json=payload, headers=_headers())
+    if r.status_code != 200:
+        sys.exit(r.json())
+
+    return np.array(r.json()["embedding"])
+
+
+async def aembedding(text: str, client: httpx.AsyncClient) -> np.array:
+    payload = {
+        "modelUri": DOC_URI if model == "doc" else QUERY_URI,
+        "text": text,
+    }
+
+    r = await client.post(EMBEDDING_URL, json=payload, headers=_headers())
     if r.status_code != 200:
         sys.exit(r.json())
 
