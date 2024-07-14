@@ -3,6 +3,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct, ScoredPoint
 
 import uuid
+from typing import List
 
 QDRANT_DB_PATH = "vector_db"
 CLIENT = QdrantClient(path=QDRANT_DB_PATH)
@@ -24,5 +25,5 @@ def insert(embeds, collection: str = "default") -> None:
     CLIENT.upsert(collection_name=collection, points=points)
 
 
-def search(query: np.array, limit: int = 3, collection: str = "default") -> ScoredPoint:
+def search(query: np.array, limit: int = 3, collection: str = "default") -> List[ScoredPoint]:
     return CLIENT.search(collection_name=collection, query_vector=query, limit=limit)
