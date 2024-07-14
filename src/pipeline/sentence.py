@@ -1,16 +1,15 @@
-import spacy
+from nltk.tokenize import sent_tokenize
 
 from typing import List, Dict
 
 from .md import AST
 
-NLP = spacy.load("ru_core_news_sm")
 
 Sentence = Dict
 
 
 def _split_into_sentences(text: str) -> List[str]:
-    return [sent.text.strip() for sent in NLP(text).sents]
+    return sent_tokenize(text)
 
 
 def sentences(ast: List[AST]) -> List[Sentence]:
