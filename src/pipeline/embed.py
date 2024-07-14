@@ -3,13 +3,13 @@ Chunk embedding
 """
 
 import numpy as np
-import httpx
+from sentence_transformers import SentenceTransformer
 
-import asyncio
 from typing import Literal, List, Tuple, Dict
 
 from .chunk import Chunk
-from ..util import yapi, ratelimit
+
+EMBEDDER = SentenceTransformer("paraphrase-multilingual-MiniLM-L12-v2")
 
 # How to process the chunk contents.
 # - "plain" leaves the content as it.
@@ -23,36 +23,24 @@ def embed(chunks: List[Chunk], mode: Mode) -> List[Tuple[np.array, Payload]]:
     Create a list of embeddings and their payloads from chunks.
     """
 
-    async def a():
-        tasks = []
+    out = []
 
-        async with ratelimit.RateLimitedClient(1, count=8) as client:
-            async with asyncio.TaskGroup() as tg:
-                for chunk in chunks:
-                    task = tg.create_task(_embed_chunk(chunk, mode, client))
-                    tasks.append(task)
+    for chunk in chunks:
+        content = _edit_chunk(chunk, mode)
+        embed = EMBEDDER.encode(content, client)
 
-        return tasks
+        payload = {
+            "content": chunk["content"],
+            "line_start": chunk["line_start"],
+            "line_end": chunk["line_end"],
+            "page_start": chunk["page_start"],
+            "page_end": chunk["page_end"],
+            "document": chunk["document"],
+        }
 
-    tasks = asyncio.run(a())
-    out = [task.result() for task in tasks]
+        out.append((embed, payload))
 
     return out
-
-
-async def _embed_chunk(chunk, mode, client) -> Tuple[np.array, Payload]:
-    content = _edit_chunk(chunk, mode)
-    embed = await yapi.aembedding(content, client)
-
-    payload = {
-        "content": chunk["content"],
-        "line_start": chunk["line_start"],
-        "line_end": chunk["line_end"],
-        "page_start": chunk["page_start"],
-        "page_end": chunk["page_end"],
-        "document": chunk["document"],
-    }
-    return (embed, payload)
 
 
 def _edit_chunk(chunk: Chunk, mode: Mode) -> str:
