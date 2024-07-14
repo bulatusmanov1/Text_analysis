@@ -13,7 +13,7 @@ def pipeline(
     embed_mode: EmbedMode,
 ):
     collection_id = f"{chunk_mode}+{embed_mode}"
-    qdrant.create_collection(collection=collection_id)
+    qdrant.create_collection(collection=collection_id, size=256)
 
     for doc in docs:
         with open(f"data/md/{doc}.json", "r") as file:
@@ -21,7 +21,7 @@ def pipeline(
         pages = json.loads(content)
 
         for idx, page in enumerate(pages):
-            _process_page(page, idx, doc, chunk_mode, embed_mode)
+            _process_page(page, idx, doc, chunk_mode, embed_mode, collection_id)
 
 
 def _process_page(
@@ -30,10 +30,11 @@ def _process_page(
     doc: int,
     chunk_mode: ChunkMode,
     embed_mode: EmbedMode,
+    collection_id: str,
 ) -> None:
     ast = md.ast(page, page=page_idx, document=doc)
     sentences = sentence.sentences(ast)
     chunks = chunk.chunk(sentences, chunk_mode)
     embeds = embed.embed(chunks, embed_mode)
 
-    qdrant.insert(embeds)
+    qdrant.insert(embeds, collection=collection_id)
