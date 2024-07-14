@@ -25,5 +25,7 @@ def insert(embeds, collection: str = "default") -> None:
     CLIENT.upsert(collection_name=collection, points=points)
 
 
-def search(query: np.array, limit: int = 3, collection: str = "default") -> List[ScoredPoint]:
+def search(
+    query: np.array, limit: int = 3, collection: str = "default"
+) -> List[ScoredPoint]:
     return CLIENT.search(collection_name=collection, query_vector=query, limit=limit)
