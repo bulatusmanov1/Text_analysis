@@ -15,7 +15,7 @@ EMBED_MODES = ["plain", "heading"]
 
 match sys.argv[1]:
     case "print":
-        with open(f"data/md/{sys.argv[2]}.json", "r") as file:
+        with open(f"/data/md/{sys.argv[2]}.json", "r") as file:
             content = file.read()
         pages = json.loads(content)
         print("\n\n---\n\n".join(pages))
