@@ -1,3 +1,6 @@
 [submodule "data"]
 	path = data
 	url = "https://github.com/bulatusmanov1/data.git"
+[submodule "paraphrase-multilingual-MiniLM-L12-v2"]
+	path = paraphrase-multilingual-MiniLM-L12-v2
+	url = https://huggingface.co/sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
