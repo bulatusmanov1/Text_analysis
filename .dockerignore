@@ -1,0 +1,6 @@
+data/
+.git/
+.ruff_cache
+vector_db/
+toolkit.nu
+poetry.lock
