@@ -1,7 +1,8 @@
 from typing import List
 import json
 
-from . import md, sentence, chunk, embed, qdrant
+from . import md, sentence, chunk, embed
+from ..util import qdrant
 from chunk import Mode as ChunkMode
 from embed import Mode as EmbedMode
 
