@@ -27,7 +27,7 @@ def embed(chunks: List[Chunk], mode: Mode) -> List[Tuple[np.array, Payload]]:
 
     for chunk in chunks:
         content = _edit_chunk(chunk, mode)
-        embed = "" # EMBEDDER.encode(content, client)
+        embed = EMBEDDER.encode(content, client)
 
         payload = {
             "content": chunk["content"],
