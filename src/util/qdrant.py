@@ -19,7 +19,7 @@ def insert(embeds, collection: str = "default") -> None:
     points = []
 
     for vector, payload in embeds:
-        points.append(PointStruct(id=uuid.uuid4(), vector=vector, payload=payload))
+        points.append(PointStruct(id=str(uuid.uuid4()), vector=vector, payload=payload))
 
     CLIENT.upsert(collection_name=collection, points=points)
 
