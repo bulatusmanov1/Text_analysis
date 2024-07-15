@@ -6,16 +6,16 @@ from typing import List, Literal, Dict
 
 from .sentence import Sentence
 
-Mode = Literal["size-128", "size-256", "section"]
+Mode = Literal["size-256", "size-512", "section"]
 Chunk = Dict
 
 
 def chunk(sentences: List[Sentence], mode: Mode) -> List[Chunk]:
     match mode:
-        case "size-128":
-            return _chunk_size(sentences, size=128)
         case "size-256":
             return _chunk_size(sentences, size=256)
+        case "size-512":
+            return _chunk_size(sentences, size=512)
         case "section":
             return _chunk_sections(sentences)
 

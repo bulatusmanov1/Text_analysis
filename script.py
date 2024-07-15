@@ -9,7 +9,7 @@ from src.util import yapi, qdrant
 
 
 FILES = list(range(0, 81))
-CHUNK_MODES = ["size-128", "size-256", "section"]
+CHUNK_MODES = ["size-256", "size-512" "section"]
 EMBED_MODES = ["plain", "heading"]
 
 match sys.argv[1]:
