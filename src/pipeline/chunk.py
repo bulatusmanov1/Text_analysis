@@ -16,7 +16,7 @@ def chunk(sentences: List[Sentence], mode: Mode) -> List[Chunk]:
             return _chunk_size(sentences, size=256)
         case "size-512":
             return _chunk_size(sentences, size=512)
-        case "section":
+        case "paragraph":
             return _chunk_paragraphs(sentences)
 
 
