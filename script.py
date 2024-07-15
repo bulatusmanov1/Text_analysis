@@ -6,6 +6,7 @@ from itertools import product
 from src import pipeline
 from src.util import qdrant
 from src.util.sbert import EMBEDDER
+from src.util.match import match
 
 
 FILES = list(range(0, 81))
@@ -43,43 +44,23 @@ match sys.argv[1]:
             document=document,
         )
 
-        print(qdrant.dump_points(points))
+        print(qdrant.convert_points(points))
 
     case "bench":
-        pass
+        chunk_mode = os.environ["CHUNK_MODE"]
+        embed_mode = os.environ["EMBED_MODE"]
 
+        with open("/data/tests/document.json", "r") as file:
+            content = file.read()
+            tests = json.loads(content)
 
-def matcher(test, result) -> int | None:
-    MIN, MAX = 0, 1000
-
-    distance = None
-
-    for answer in test["answer"]:
-        if answer["page"] == result["payload"]["page_start"]:
-            line_start = result["payload"]["line_start"]
-
-            if answer["page"] == result["payload"]["page_end"]:
-                line_end = result["payload"]["line_end"]
-            else:
-                line_end = MAX
-
-        elif answer["page"] == result["payload"]["page_end"]:
-            line_end = result["payload"]["line_end"]
-
-            if answer["page"] == result["payload"]["page_end"]:
-                line_start = result["payload"]["line_start"]
-            else:
-                line_start = MIN
-
-        else:
-            # no match for this answer
-            continue
-
-        if line_start <= answer["line"] <= line_end:
-            distance = 0
-        else:
-            distance = min(
-                abs(answer["line"] - line_start), abs(answer["line"] - line_end)
+        for test in tests:
+            query = EMBEDDER.encode(test["question"])
+            points = qdrant.search(
+                query,
+                collection=f"{chunk_mode}+{embed_mode}",
+                document=test["document"],
             )
-
-    return distance
+            results = qdrant.convert_points(points)
+            # a list of (distance, score) tuples
+            results = [(match(test, result), result["score"]) for result in results]
