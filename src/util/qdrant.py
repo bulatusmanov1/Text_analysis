@@ -1,6 +1,14 @@
 import numpy as np
 from qdrant_client import QdrantClient
-from qdrant_client.models import VectorParams, Distance, PointStruct, ScoredPoint
+from qdrant_client.models import (
+    VectorParams,
+    Distance,
+    PointStruct,
+    ScoredPoint,
+    Filter,
+    FieldCondition,
+    MatchValue,
+)
 
 import uuid
 from typing import List
@@ -26,6 +34,18 @@ def insert(embeds, collection: str = "default") -> None:
 
 
 def search(
-    query: np.array, limit: int = 3, collection: str = "default"
+    query: np.array, limit: int = 3, collection: str = "default", document: int = None
 ) -> List[ScoredPoint]:
-    return CLIENT.search(collection_name=collection, query_vector=query, limit=limit)
+    if document is None:
+        filter = None
+    else:
+        filter = Filter(
+            must=[FieldCondition(key="document", match=MatchValue(document))]
+        )
+
+    return CLIENT.search(
+        collection_name=collection,
+        query_vector=query,
+        limit=limit,
+        scroll_filter=filter,
+    )
