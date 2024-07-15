@@ -47,5 +47,5 @@ def search(
         collection_name=collection,
         query_vector=query,
         limit=limit,
-        scroll_filter=filter,
+        query_filter=filter,
     )
