@@ -34,7 +34,7 @@ def insert(embeds, collection: str = "default") -> None:
 
 
 def search(
-    query: np.array, limit: int = 3, collection: str = "default", document: int = None
+    query: np.array, limit: int = 10, collection: str = "default", document: int = None
 ) -> List[ScoredPoint]:
     if document is None:
         filter = None
