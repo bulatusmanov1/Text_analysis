@@ -15,10 +15,15 @@ EMBED_MODES = ["plain", "heading"]
 
 match sys.argv[1]:
     case "print":
-        with open(f"/data/md/{sys.argv[2]}.json", "r") as file:
+        with open(f"data/md/{sys.argv[2]}.json", "r") as file:
             content = file.read()
         pages = json.loads(content)
-        print("\n\n---\n\n".join(pages))
+
+        for i, page in enumerate(pages):
+            for j, line in enumerate(page.splitlines()):
+                print(f"{i: <2}:{j: <2}:\t{line}")
+            print("_" * 80)
+
         sys.exit()
 
     case "init":
