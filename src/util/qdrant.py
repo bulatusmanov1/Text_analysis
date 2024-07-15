@@ -11,6 +11,7 @@ from qdrant_client.models import (
 )
 
 import uuid
+import json
 from typing import List
 
 QDRANT_DB_PATH = "/vector_db"
@@ -49,3 +50,16 @@ def search(
         limit=limit,
         query_filter=filter,
     )
+
+
+def dump_points(points: List[ScoredPoint]) -> str:
+    """
+    Convert a list of points to a JSON string.
+    """
+
+    out = []
+
+    for point in points:
+        out.append({"score": point.score, "payload": point.payload})
+
+    return json.dumps(out)
