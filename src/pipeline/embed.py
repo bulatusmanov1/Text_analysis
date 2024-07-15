@@ -7,7 +7,7 @@ import numpy as np
 from typing import Literal, List, Tuple, Dict
 
 from .chunk import Chunk
-from ..uitl.sbert import EMBEDDER
+from ..util.sbert import EMBEDDER
 
 
 # How to process the chunk contents.
