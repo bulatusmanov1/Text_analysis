@@ -3,7 +3,6 @@ import sys
 import os
 import json
 from itertools import product
-import concurrent.futures
 
 from src import pipeline
 from src.util import yapi, qdrant
@@ -22,11 +21,9 @@ match sys.argv[1]:
         sys.exit()
 
     case "init":
-        with concurrent.futures.ProcessPoolExecutor() as executor:
-            for chunk_mode, embed_mode in product(CHUNK_MODES, EMBED_MODES):
-                executor.submit(
-                    pipeline.pipeline, FILES, chunk_mode, embed_mode
-                ).result()
+        for chunk_mode, embed_mode in product(CHUNK_MODES, EMBED_MODES):
+            print(f"Processing '{chunk_mode}+{embed_mode}'")
+            pipeline.pipeline(FILES, chunk_mode, embed_mode)
 
     case "search":
         chunk_mode = os.environ["CHUNK_MODE"]
