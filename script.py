@@ -37,13 +37,11 @@ match sys.argv[1]:
         else:
             document = None
 
-        results = qdrant.search(
+        points = qdrant.search(
             query,
             limit=10,
             collection=f"{chunk_mode}+{embed_mode}",
             document=document,
         )
 
-        for point in results:
-            print(point.score)
-            pp(point.payload)
+        print(qdrant.dump_points(points))
