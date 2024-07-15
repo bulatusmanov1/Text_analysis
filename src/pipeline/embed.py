@@ -3,13 +3,11 @@ Chunk embedding
 """
 
 import numpy as np
-from sentence_transformers import SentenceTransformer
 
 from typing import Literal, List, Tuple, Dict
 
 from .chunk import Chunk
 
-EMBEDDER = SentenceTransformer("/model/")
 
 # How to process the chunk contents.
 # - "plain" leaves the content as it.
