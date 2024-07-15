@@ -6,7 +6,7 @@ from typing import List, Literal, Dict
 
 from .sentence import Sentence
 
-Mode = Literal["size-256", "size-512", "section"]
+Mode = Literal["size-256", "size-512", "paragraph"]
 Chunk = Dict
 
 
@@ -17,10 +17,10 @@ def chunk(sentences: List[Sentence], mode: Mode) -> List[Chunk]:
         case "size-512":
             return _chunk_size(sentences, size=512)
         case "section":
-            return _chunk_sections(sentences)
+            return _chunk_paragraphs(sentences)
 
 
-def _chunk_sections(sentences: List[Sentence]) -> List[Chunk]:
+def _chunk_paragraphs(sentences: List[Sentence]) -> List[Chunk]:
     out = []
 
     heading = None
@@ -30,13 +30,16 @@ def _chunk_sections(sentences: List[Sentence]) -> List[Chunk]:
     page_end = 0
     content = ""
 
+    line = 0
+
     for sentence in sentences:
         if heading is None:
             heading = sentence["heading"]
             line_start = sentence["line"]
             page_start = sentence["page"]
+            line = sentence["line"]
 
-        if heading == sentence["heading"]:
+        if sentence["line"] - line <= 1:
             content += f"{sentence['content']} "
             line_end = sentence["line"]
             page_end = sentence["page"]
