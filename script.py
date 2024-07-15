@@ -5,7 +5,8 @@ import json
 from itertools import product
 
 from src import pipeline
-from src.util import yapi, qdrant
+from src.util import qdrant
+from src.util.sbert import EMBEDDER
 
 
 FILES = list(range(0, 81))
@@ -28,7 +29,7 @@ match sys.argv[1]:
     case "search":
         chunk_mode = os.environ["CHUNK_MODE"]
         embed_mode = os.environ["EMBED_MODE"]
-        query = yapi.embedding(sys.argv[2], model="query")
+        query = EMBEDDER.encode(sys.argv[2])
 
         if len(sys.argv) > 3:
             limit = int(sys.argv[3])
