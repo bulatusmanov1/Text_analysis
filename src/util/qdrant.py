@@ -40,7 +40,7 @@ def search(
         filter = None
     else:
         filter = Filter(
-            must=[FieldCondition(key="document", match=MatchValue(document))]
+            must=[FieldCondition(key="document", match=MatchValue(value=document))]
         )
 
     return CLIENT.search(
