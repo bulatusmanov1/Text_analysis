@@ -29,16 +29,21 @@ match sys.argv[1]:
     case "search":
         chunk_mode = os.environ["CHUNK_MODE"]
         embed_mode = os.environ["EMBED_MODE"]
+
         query = EMBEDDER.encode(sys.argv[2])
 
         if len(sys.argv) > 3:
-            limit = int(sys.argv[3])
+            document = int(sys.argv[3])
         else:
-            limit = 10
+            document = None
 
         results = qdrant.search(
-            query, limit=limit, collection=f"{chunk_mode}+{embed_mode}"
+            query,
+            limit=10,
+            collection=f"{chunk_mode}+{embed_mode}",
+            document=document,
         )
+
         for point in results:
             print(point.score)
             pp(point.payload)
