@@ -6,6 +6,6 @@ from pipeline.embed import Mode as EmbedMode
 def search(
     query: str, chunk_mode: ChunkMode, embed_mode: EmbedMode, document: int = None
 ):
-    results = qdrant.search(
+    return qdrant.search(
         query, collection=f"{chunk_mode}+{embed_mode}", document=document
     )
