@@ -34,7 +34,6 @@ export def run [...args] {
 			-v ./data/:/data
 			-v ./vector_db/:/vector_db
 			-v ./paraphrase-multilingual-MiniLM-L12-v2/:/model
-			-v ./nltk_data:/usr/share/nltk_data
 			--network=host
 			-e FOLDER_ID
 			-e OAUTH_TOKEN
