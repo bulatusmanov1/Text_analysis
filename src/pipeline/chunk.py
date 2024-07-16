@@ -56,6 +56,7 @@ def _chunk_paragraphs(sentences: List[Sentence]) -> List[Chunk]:
             content = sentence["content"]
             page_start = sentence["page"]
             line_start = sentence["line"]
+            line_end = line_start
 
         line = sentence["line"]
 
