@@ -74,10 +74,8 @@ def _chunk_size(sentences: List[Sentence], size: int) -> List[Chunk]:
     content = ""
 
     for sentence in sentences:
-        if heading is None:
+        if "heading" in sentence:
             heading = sentence["heading"]
-            line_start = sentence["line"]
-            page_start = sentence["page"]
 
         if len(content) + len(sentence["content"]) < size:
             content += f"{sentence['content']} "
@@ -96,8 +94,10 @@ def _chunk_size(sentences: List[Sentence], size: int) -> List[Chunk]:
                 }
             )
 
-            heading = sentence["heading"]
             content = sentence["content"]
+            page_start = sentence["page"]
+            line_start = sentence["line"]
+            line_end = line_start
 
     # there's an edgecase when the Markdown page doesn't have starting headers
     out = [chunk for chunk in out if chunk["content"] != ""]
