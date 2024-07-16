@@ -61,5 +61,5 @@ match sys.argv[1]:
                 results = [(match(test, result), result["score"]) for result in results]
                 out.append(results)
 
-            with open(f"{chunk_mode}+{embed_mode}.json") as file:
+            with open(f"bench/{chunk_mode}+{embed_mode}.json", "w") as file:
                 json.dump(file, out)
