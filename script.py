@@ -10,7 +10,7 @@ from src.util.match import match
 
 
 FILES = list(range(0, 81))
-CHUNK_MODES = ["size-256", "size-512" "paragraph"]
+CHUNK_MODES = ["size-256", "size-512", "paragraph"]
 EMBED_MODES = ["plain", "heading"]
 
 match sys.argv[1]:
