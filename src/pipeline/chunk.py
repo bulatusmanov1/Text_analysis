@@ -23,7 +23,7 @@ def chunk(sentences: List[Sentence], mode: Mode) -> List[Chunk]:
 def _chunk_paragraphs(sentences: List[Sentence]) -> List[Chunk]:
     out = []
 
-    heading = None
+    heading = ""
     line_start = 0
     page_start = 0
     line_end = 0
@@ -33,11 +33,8 @@ def _chunk_paragraphs(sentences: List[Sentence]) -> List[Chunk]:
     line = 0
 
     for sentence in sentences:
-        if heading is None:
+        if "heading" in sentence:
             heading = sentence["heading"]
-            line_start = sentence["line"]
-            page_start = sentence["page"]
-            line = sentence["line"]
 
         if sentence["line"] - line <= 1:
             content += f"{sentence['content']} "
@@ -56,8 +53,12 @@ def _chunk_paragraphs(sentences: List[Sentence]) -> List[Chunk]:
                 }
             )
 
-            heading = sentence["heading"]
-            content = sentence["heading"]
+            content = sentence["content"]
+            page_start = sentence["page"]
+            line_start = sentence["line"]
+            line_end = line_start
+
+        line = sentence["line"]
 
     return out
 
@@ -73,10 +74,8 @@ def _chunk_size(sentences: List[Sentence], size: int) -> List[Chunk]:
     content = ""
 
     for sentence in sentences:
-        if heading is None:
+        if "heading" in sentence:
             heading = sentence["heading"]
-            line_start = sentence["line"]
-            page_start = sentence["page"]
 
         if len(content) + len(sentence["content"]) < size:
             content += f"{sentence['content']} "
@@ -95,8 +94,10 @@ def _chunk_size(sentences: List[Sentence], size: int) -> List[Chunk]:
                 }
             )
 
-            heading = sentence["heading"]
             content = sentence["content"]
+            page_start = sentence["page"]
+            line_start = sentence["line"]
+            line_end = line_start
 
     # there's an edgecase when the Markdown page doesn't have starting headers
     out = [chunk for chunk in out if chunk["content"] != ""]

@@ -16,7 +16,8 @@ def pipeline(
     qdrant.create_collection(collection=collection_id, size=384)
 
     for doc in docs:
-        with open(f"/data/md/{doc}.json", "r") as file:
+        print(f"\t- {doc}")
+        with open(f"data/md/{doc}.json", "r") as file:
             content = file.read()
         pages = json.loads(content)
 

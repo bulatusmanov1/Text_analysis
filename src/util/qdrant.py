@@ -13,7 +13,7 @@ from qdrant_client.models import (
 import uuid
 from typing import List, Dict
 
-QDRANT_DB_PATH = "/vector_db"
+QDRANT_DB_PATH = "vector_db"
 CLIENT = QdrantClient(path=QDRANT_DB_PATH)
 
 

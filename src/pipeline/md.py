@@ -14,21 +14,7 @@ def ast(md: str, page: int, document: int) -> List[AST]:
 
     out = []
 
-    par = ""
     for i, line in enumerate(md.splitlines() + [""]):
-        if line.startswith("#") or line == "":
-            if par != "":
-                out.append(
-                    {
-                        "type": "paragraph",
-                        "content": par,
-                        "line": i,
-                        "page": page,
-                        "document": document,
-                    }
-                )
-            par = ""
-
         if line.startswith("#"):
             out.append(
                 {
@@ -39,8 +25,15 @@ def ast(md: str, page: int, document: int) -> List[AST]:
                     "document": document,
                 }
             )
-            continue
-
-        par += line
+        elif line != "":
+            out.append(
+                {
+                    "type": "line",
+                    "content": line,
+                    "line": i,
+                    "page": page,
+                    "document": document,
+                }
+            )
 
     return out

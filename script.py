@@ -10,22 +10,10 @@ from src.util.match import match
 
 
 FILES = list(range(0, 81))
-CHUNK_MODES = ["size-256", "size-512" "paragraph"]
+CHUNK_MODES = ["size-256", "size-512", "paragraph"]
 EMBED_MODES = ["plain", "heading"]
 
 match sys.argv[1]:
-    case "print":
-        with open(f"data/md/{sys.argv[2]}.json", "r") as file:
-            content = file.read()
-        pages = json.loads(content)
-
-        for i, page in enumerate(pages):
-            for j, line in enumerate(page.splitlines()):
-                print(f"{i: <2}:{j: <2}:\t{line}")
-            print("_" * 80)
-
-        sys.exit()
-
     case "init":
         for chunk_mode, embed_mode in product(CHUNK_MODES, EMBED_MODES):
             print(f"Processing '{chunk_mode}+{embed_mode}'")
@@ -49,13 +37,16 @@ match sys.argv[1]:
             document=document,
         )
 
-        print(qdrant.convert_points(points))
+        results = qdrant.convert_points(points)
+        for result in results:
+            print(result["score"])
+            print(result["payload"])
 
     case "bench":
         chunk_mode = os.environ["CHUNK_MODE"]
         embed_mode = os.environ["EMBED_MODE"]
 
-        with open("/data/tests/document.json", "r") as file:
+        with open("data/tests/document.json", "r") as file:
             content = file.read()
             tests = json.loads(content)
 

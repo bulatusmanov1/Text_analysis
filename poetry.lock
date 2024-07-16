@@ -1664,6 +1664,33 @@ files = [
 ]
 
 [[package]]
+name = "pytorch-triton-rocm"
+version = "2.3.1"
+description = "A language and compiler for custom Deep Learning operations"
+optional = false
+python-versions = "*"
+files = [
+    {file = "pytorch_triton_rocm-2.3.1-cp310-cp310-linux_x86_64.whl", hash = "sha256:db52f8b5cf00e5b6cd0fe9efcdc0827979cfe06317afe825f0602930e61e4c29"},
+    {file = "pytorch_triton_rocm-2.3.1-cp311-cp311-linux_x86_64.whl", hash = "sha256:e5eb578d9feb185d35886b9a7d969896d94881f710e083990c45dff19af5fa74"},
+    {file = "pytorch_triton_rocm-2.3.1-cp312-cp312-linux_x86_64.whl", hash = "sha256:4019e239b1801d9cb2ab832ca3ca09f66da0b237f8fc8dae68805457313c21c7"},
+    {file = "pytorch_triton_rocm-2.3.1-cp38-cp38-linux_x86_64.whl", hash = "sha256:343d587735644c9ada403fd4cbee43d09aa8e66ed58c6c94786a69f7cfc64809"},
+    {file = "pytorch_triton_rocm-2.3.1-cp39-cp39-linux_x86_64.whl", hash = "sha256:914abc55be95b6a26d89ef32505e3aff68c01e1e95dd42a3467c7876579d7988"},
+]
+
+[package.dependencies]
+filelock = "*"
+
+[package.extras]
+build = ["cmake (>=3.20)", "lit"]
+tests = ["autopep8", "flake8", "isort", "numpy", "pytest", "scipy (>=1.7.1)", "torch"]
+tutorials = ["matplotlib", "pandas", "tabulate", "torch"]
+
+[package.source]
+type = "legacy"
+url = "https://download.pytorch.org/whl/rocm6.0"
+reference = "pytorch_rocm"
+
+[[package]]
 name = "pywin32"
 version = "306"
 description = "Python for Window Extensions"
@@ -2598,21 +2625,16 @@ testing = ["black (==22.3)", "datasets", "numpy", "pytest", "requests", "ruff"]
 
 [[package]]
 name = "torch"
-version = "2.3.1+cpu"
+version = "2.3.1+rocm6.0"
 description = "Tensors and Dynamic neural networks in Python with strong GPU acceleration"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "torch-2.3.1+cpu-cp310-cp310-linux_x86_64.whl", hash = "sha256:d679e21d871982b9234444331a26350902cfd2d5ca44ce6f49896af8b3a3087d"},
-    {file = "torch-2.3.1+cpu-cp310-cp310-win_amd64.whl", hash = "sha256:500bf790afc2fd374a15d06213242e517afccc50a46ea5955d321a9a68003335"},
-    {file = "torch-2.3.1+cpu-cp311-cp311-linux_x86_64.whl", hash = "sha256:a272defe305dbd944aa28a91cc3db0f0149495b3ebec2e39723a7224fa05dc57"},
-    {file = "torch-2.3.1+cpu-cp311-cp311-win_amd64.whl", hash = "sha256:d2965eb54d3c8818e2280a54bd53e8246a6bb34e4b10bd19c59f35b611dd9f05"},
-    {file = "torch-2.3.1+cpu-cp312-cp312-linux_x86_64.whl", hash = "sha256:2141a6cb7021adf2f92a0fd372cfeac524ba460bd39ce3a641d30a561e41f69a"},
-    {file = "torch-2.3.1+cpu-cp312-cp312-win_amd64.whl", hash = "sha256:6acdca2530462611095c44fd95af75ecd5b9646eac813452fe0adf31a9bc310a"},
-    {file = "torch-2.3.1+cpu-cp38-cp38-linux_x86_64.whl", hash = "sha256:cab92d5101e6db686c5525e04d87cedbcf3a556073d71d07fbe7d1ce09630ffb"},
-    {file = "torch-2.3.1+cpu-cp38-cp38-win_amd64.whl", hash = "sha256:dbc784569a367fd425158cf4ae82057dd3011185ba5fc68440432ba0562cb5b2"},
-    {file = "torch-2.3.1+cpu-cp39-cp39-linux_x86_64.whl", hash = "sha256:a3cb8e61ba311cee1bb7463cbdcf3ebdfd071e2091e74c5785e3687eb02819f9"},
-    {file = "torch-2.3.1+cpu-cp39-cp39-win_amd64.whl", hash = "sha256:df68668056e62c0332e03f43d9da5d4278b39df1ba58d30ec20d34242070955d"},
+    {file = "torch-2.3.1+rocm6.0-cp310-cp310-linux_x86_64.whl", hash = "sha256:d36795e37c5654f3af5569f3c4bb230ccab722016648b30b4b24b8fd5eaece25"},
+    {file = "torch-2.3.1+rocm6.0-cp311-cp311-linux_x86_64.whl", hash = "sha256:4e8918e991ba4d145450692c8b99afbcafb2974c91168be5a3f055b37ab27863"},
+    {file = "torch-2.3.1+rocm6.0-cp312-cp312-linux_x86_64.whl", hash = "sha256:7d0aac31a5d76a6f737238725baecf35a6924f333f60a075ef5856c9e3212045"},
+    {file = "torch-2.3.1+rocm6.0-cp38-cp38-linux_x86_64.whl", hash = "sha256:b50429ec9286b9d07cd3f377a26425a63c9814734136f9850f5217773fca9479"},
+    {file = "torch-2.3.1+rocm6.0-cp39-cp39-linux_x86_64.whl", hash = "sha256:b9ec21d7f922f3204da64ba2f8f488dd75c96ffb811abc41843432c7b31b4c37"},
 ]
 
 [package.dependencies]
@@ -2621,6 +2643,7 @@ fsspec = "*"
 jinja2 = "*"
 mkl = {version = ">=2021.1.1,<=2021.4.0", markers = "platform_system == \"Windows\""}
 networkx = "*"
+pytorch-triton-rocm = "2.3.1"
 sympy = "*"
 typing-extensions = ">=4.8.0"
 
@@ -2630,8 +2653,8 @@ optree = ["optree (>=0.9.1)"]
 
 [package.source]
 type = "legacy"
-url = "https://download.pytorch.org/whl/cpu"
-reference = "pytorch_cpu"
+url = "https://download.pytorch.org/whl/rocm6.0"
+reference = "pytorch_rocm"
 
 [[package]]
 name = "tqdm"
@@ -2884,4 +2907,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "d706c4404bfd8364bbd67a0da8c5be801da75ef038eb82ed7d3ab7829148ec7a"
+content-hash = "ce769d2d9524f1fdac296a93abe8e407e043efa274b4abb4d273629a63f084cf"

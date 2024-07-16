@@ -32,7 +32,7 @@ def sentences(ast: List[AST]) -> List[Sentence]:
                     }
                 )
 
-            case "paragraph":
+            case "line":
                 sentences = _split_into_sentences(el["content"])
 
                 for sentence in sentences:
