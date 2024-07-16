@@ -14,31 +14,22 @@ def ast(md: str, page: int, document: int) -> List[AST]:
 
     out = []
 
-    par = ""
-    last_index = 0
-
     for i, line in enumerate(md.splitlines() + [""]):
-        if line.startswith("#") or line == "":
-            if par != "":
-                out.append(
-                    {
-                        "type": "paragraph",
-                        "content": par,
-                        "line": last_index,
-                        "page": page,
-                        "document": document,
-                    }
-                )
-            par = ""
-        else:
-            par += line
-            last_index = i
-
         if line.startswith("#"):
             out.append(
                 {
                     "type": "heading",
                     "content": line.strip(" #"),
+                    "line": i,
+                    "page": page,
+                    "document": document,
+                }
+            )
+        elif line != "":
+            out.append(
+                {
+                    "type": "line",
+                    "content": line,
                     "line": i,
                     "page": page,
                     "document": document,
