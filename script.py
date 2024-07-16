@@ -37,7 +37,10 @@ match sys.argv[1]:
             document=document,
         )
 
-        print(qdrant.convert_points(points))
+        results = qdrant.convert_points(points)
+        for result in results:
+            print(result["score"])
+            print(result["payload"])
 
     case "bench":
         chunk_mode = os.environ["CHUNK_MODE"]
