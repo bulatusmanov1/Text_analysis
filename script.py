@@ -62,4 +62,4 @@ match sys.argv[1]:
                 out.append(results)
 
             with open(f"bench/{chunk_mode}+{embed_mode}.json", "w") as file:
-                file.write(json.dump(out))
+                file.write(json.dumps(out))
