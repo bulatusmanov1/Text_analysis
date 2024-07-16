@@ -43,20 +43,23 @@ match sys.argv[1]:
             print(result["payload"])
 
     case "bench":
-        chunk_mode = os.environ["CHUNK_MODE"]
-        embed_mode = os.environ["EMBED_MODE"]
+        for chunk_mode, embed_mode in product(CHUNK_MODES, EMBED_MODES):
+            with open("data/tests/document.json", "r") as file:
+                content = file.read()
+                tests = json.loads(content)
 
-        with open("data/tests/document.json", "r") as file:
-            content = file.read()
-            tests = json.loads(content)
+            out = []
+            for test in tests:
+                query = EMBEDDER.encode(test["question"])
+                points = qdrant.search(
+                    query,
+                    collection=f"{chunk_mode}+{embed_mode}",
+                    document=test["document"],
+                )
+                results = qdrant.convert_points(points)
+                # a list of (distance, score) tuples
+                results = [(match(test, result), result["score"]) for result in results]
+                out.append(results)
 
-        for test in tests:
-            query = EMBEDDER.encode(test["question"])
-            points = qdrant.search(
-                query,
-                collection=f"{chunk_mode}+{embed_mode}",
-                document=test["document"],
-            )
-            results = qdrant.convert_points(points)
-            # a list of (distance, score) tuples
-            results = [(match(test, result), result["score"]) for result in results]
+            with open(f"{chunk_mode}+{embed_mode}.json") as file:
+                json.dump(file, out)
