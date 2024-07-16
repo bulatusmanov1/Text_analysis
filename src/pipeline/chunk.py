@@ -23,7 +23,7 @@ def chunk(sentences: List[Sentence], mode: Mode) -> List[Chunk]:
 def _chunk_paragraphs(sentences: List[Sentence]) -> List[Chunk]:
     out = []
 
-    heading = None
+    heading = ""
     line_start = 0
     page_start = 0
     line_end = 0
@@ -33,11 +33,8 @@ def _chunk_paragraphs(sentences: List[Sentence]) -> List[Chunk]:
     line = 0
 
     for sentence in sentences:
-        if heading is None:
+        if "heading" in sentence:
             heading = sentence["heading"]
-            line_start = sentence["line"]
-            page_start = sentence["page"]
-            line = sentence["line"]
 
         if sentence["line"] - line <= 1:
             content += f"{sentence['content']} "
@@ -58,6 +55,10 @@ def _chunk_paragraphs(sentences: List[Sentence]) -> List[Chunk]:
 
             heading = sentence["heading"]
             content = sentence["heading"]
+            page_start = sentences["page"]
+            line_start = sentences["line"]
+
+        line = sentence["line"]
 
     return out
 
