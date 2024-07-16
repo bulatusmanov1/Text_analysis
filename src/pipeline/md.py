@@ -32,6 +32,7 @@ def ast(md: str, page: int, document: int) -> List[AST]:
             par = ""
         else:
             par += line
+            last_index = i
 
         if line.startswith("#"):
             out.append(
