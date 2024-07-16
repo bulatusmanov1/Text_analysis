@@ -43,7 +43,7 @@ match sys.argv[1]:
         chunk_mode = os.environ["CHUNK_MODE"]
         embed_mode = os.environ["EMBED_MODE"]
 
-        with open("/data/tests/document.json", "r") as file:
+        with open("data/tests/document.json", "r") as file:
             content = file.read()
             tests = json.loads(content)
 
